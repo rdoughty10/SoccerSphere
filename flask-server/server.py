@@ -1,20 +1,21 @@
-from flask import Flask
+from flask import Flask, render_template
 from pymongo import MongoClient
+from data_models.data import Data
 
 app = Flask(__name__)
 
-client = MongoClient('mongodb+srv://svb24:soccersphere@soccersphere.wr8cfd3.mongodb.net/', username='svb24', password='soccersphere')
+data = Data()
+match_data = data.get_match(3835335)
+team_name = match_data['home_team']['home_team_name']
 
-## Example: pulling data from a random match
-db = client["matches"]
-col = db['106']
-x = col.find_one()
-print(x)
 
 # test API route
 @app.route("/test")
 def test():
+    output = f"<h1> {str(team_name)} <h1>"
+    print(output)
     return {"test": ["test1", "test2", "test3"]}
+    
 
 if __name__ == "__main__":
     app.run(debug=True)
