@@ -47,21 +47,25 @@ class Data:
     def get_events(self, match_id, remove={}):
         '''return the events for a particular game (returns list of documents)'''
         return self.events[match_id].find({},{"_id": 0})
-
+    
     def get_event_player_data(self, match_id):
         '''
             Returns event data with corresponding player location data in form
-            {event: {player_id: [x, y], player_id: [x, y]}, event: ...}
+            {event_id: {event_info: {event_data}, player_locations: {1: {player_info}, 2: {player_info}}, event: ...}
         '''
-        events = self.get_events(match_id, remove={})[:10]
-        threesixty_data = self.threesixty[match_id]
+        events = self.get_events(match_id, remove={})[:100]
+        threesixty_data = self.get_threesixty(match_id)
+                
         player_event_data = {}
         for event in events:
-            event_id = event['id']
-            location_data = threesixty_data.find_one({'event_uuid': event_id}, {"_id": 0})
-            if location_data is not None:
-                location_data = location_data['freeze_frame']
-            player_event_data[event_id] = {'event_info': event, 'player_locations': location_data}
+            player_event_data[event['id']] = {}
+            player_event_data[event['id']]['event_data'] = event
+        for threesixty in threesixty_data:
+            event_id = threesixty['event_uuid']
+            try: ## try except just in case event_id not in event (issue when limiting the events to first 100)
+                player_event_data[event_id]['location_data'] = threesixty['freeze_frame']
+            except:
+                continue
         return player_event_data
 
     def get_threesixty(self, match_id):
