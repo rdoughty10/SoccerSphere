@@ -54,8 +54,7 @@ class Data:
             {event_id: {event_info: {event_data}, player_locations: {1: {player_info}, 2: {player_info}}, event: ...}
         '''
         events = self.get_events(match_id, remove={})[:100]
-        threesixty_data = self.get_threesixty(match_id)
-                
+        threesixty_data = self.get_threesixty(match_id) 
         player_event_data = {}
         for event in events:
             player_event_data[event['id']] = {}

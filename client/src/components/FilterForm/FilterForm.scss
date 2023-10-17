@@ -1,0 +1,26 @@
+
+
+.filterForm {
+    text-align: left;
+    padding: 20px 50px 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    border-bottom: 1px solid grey;
+}
+
+#MatchSelector, #EventSelector {
+    width: 400px;
+}
+
+@media only screen and (max-width: 800px) {
+    // properties for smaller screens
+    .filterForm {
+        flex-direction: column;
+        justify-content: none;
+    }
+
+    .filterForm > div {
+        margin-bottom: 20px;
+    }
+}
