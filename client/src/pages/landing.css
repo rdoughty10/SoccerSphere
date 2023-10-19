@@ -1,0 +1,30 @@
+.landing {
+    background-color: mediumseagreen;
+    height:88vh;
+    display: flex;
+    color: Black;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(8px + 2vmin);
+}
+
+.lilBox {
+    text-align: center;
+    color: Black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color:#E5DADA;
+    padding-right: 2vmin;
+    padding-left: 2vmin;
+}
+
+h2{
+    font-size: calc(5px + 2vmin);
+}
+
+.landingTitle {
+    color:black;
+}

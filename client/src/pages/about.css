@@ -1,0 +1,43 @@
+.About-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: calc(40px + 2vmin);
+    color: black;
+    padding: 20px;
+    margin-top: 0px;
+  }
+  
+  .developed {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
+  
+  }
+  
+  .soccer{
+    position:absolute;
+    top:0px;
+    left:0px;
+  }
+  
+  h4{
+    text-align:left;
+    margin-top: 10px;
+    margin-left: 100px;
+    padding: 20px;
+    color:black;  
+  }
+  
+  p:not(.developed) {
+    margin-left: 100px;
+    padding:20px;
+    margin-right: 400px;
+  }
+  
+  .App-link {
+    color: #61dafb;
+  }
