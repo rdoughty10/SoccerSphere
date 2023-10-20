@@ -9,7 +9,7 @@ const Navigbar = () => {
     return (
     <>
         <Nav>
-        <h1  class = "navTitle">~LOGO~SoccerSphere</h1>
+        <h1 className = "navTitle">~LOGO~SoccerSphere</h1>
             <NavMenu>
                 <NavLink to="./" activeStyle>
                     Home

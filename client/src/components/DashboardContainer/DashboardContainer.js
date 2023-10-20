@@ -1,6 +1,7 @@
 import React from "react";
 import FilterForm from "../FilterForm";
 import "./DashboardContainer.scss";
+import Heatmap from "../Heatmap"
 
 export default class DashboardContainer extends React.Component {
 
@@ -9,7 +10,7 @@ export default class DashboardContainer extends React.Component {
 
         this.state = {
             events: [],
-            selectedEvents: [],
+            selectedEvent: [],
             match: null,
             matchData: [],
             homeTeam: null,
@@ -49,9 +50,14 @@ export default class DashboardContainer extends React.Component {
         }
     }
 
-    setEvents = (selectedEvents) => {
+    setEvents = (selectedEvent) => {
+        let data = [];
+        for (var i in selectedEvent) {
+            data.push(selectedEvent[i])
+        } 
+        console.log(data);
         this.setState({
-            selectedEvents: selectedEvents
+            selectedEvent: data
         });
     }
 
@@ -78,7 +84,7 @@ export default class DashboardContainer extends React.Component {
         if (matches == null) {
             return
         }
-
+        console.log(this.state.selectedEvent)
         return (
             <div className="dashboardContainer">
                 <h4 className="title">{matches && matches[0] && matches[0].competition ? matches[0].competition.competition_name : ""}</h4>
@@ -88,7 +94,25 @@ export default class DashboardContainer extends React.Component {
                     setMatch={this.setMatch}
                     events={this.state.events}
                     setEvents={this.setEvents}
-                />   
+                />
+                { this.state.events ?
+                    <div>
+                        <div className="chartGrid">
+                            <div className="bx--grid">
+                                <div className="bx--row">
+                                {this.state.selectedEvent ?
+                                    this.state.selectedEvent.slice(0, 1).map(events => (
+                                        <div className="bx--col">
+                                            <Heatmap 
+                                                data={this.state.selectedEvent}
+                                            />
+                                        </div>)) : <div /> 
+                                }
+                                </div>
+                            </div>
+                        </div>
+                    </div> : <div/>
+                }   
             </div>
         );
     }

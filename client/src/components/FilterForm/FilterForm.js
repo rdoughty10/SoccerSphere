@@ -22,7 +22,7 @@ export default class FilterForm extends React.Component {
     }
 
     setEvents = (events) => {
-        this.props.setEvents(events.selectedItems)
+        this.props.setEvents(events.selectedItem)
         console.log(events.selectedItem)
         this.setState({
             events: events.selectedItem
