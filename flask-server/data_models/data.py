@@ -1,6 +1,7 @@
 '''Contains main processing and queries from MongoDB'''
 from pymongo import MongoClient
 from bson.json_util import dumps
+import math
 
 class Data:
     '''Class contains most major queries to access larger data and collections from MongoDB'''
@@ -113,7 +114,7 @@ class Data:
         return passes_data
     
     def get_line_breaking_passes(self, match_id):
-        '''(INCOMPLETE) calculates line breaking passes for a game and returns those events'''
+        '''calculates line breaking passes for a game and returns those events'''
         
         complete_passes = self.get_complete_passes(match_id)
         threesixty_data = self.get_threesixty(match_id) 
@@ -161,4 +162,48 @@ class Data:
         line_breaking_passes = {id: event for id, event in passes_data.items() if id in linebreaking_ids}
         
         return line_breaking_passes
+    
+    def get_ball_receipts(self, match_id):
+        '''Gets all ball receipts'''
+        return self.events[match_id].find({"type.name": "Ball Receipt*"}, {"_id": 0})
+
         
+    def ball_receipts_in_space(self, match_id):
+        ''' returns all ball receipts in space'''
+        ball_receipts = self.get_ball_receipts(match_id)
+        threesixty_data = self.get_threesixty(match_id) 
+        ball_receipts_data = {}
+        for pass_event in ball_receipts:
+            ball_receipts_data[pass_event['id']] = {}
+            ball_receipts_data[pass_event['id']]['event_data'] = pass_event
+        for threesixty in threesixty_data:
+            event_id = threesixty['event_uuid']
+            try: ## try except just in case event_id not in event (issue when limiting the events to first 100)
+                ball_receipts_data[event_id]['location_data'] = threesixty['freeze_frame']
+            except:
+                continue
+            
+        
+        ball_receipts_ids = []
+        for id, event in ball_receipts_data.items():
+                        
+            ballx, bally = event["event_data"]["location"]
+            
+            if 'location_data' in event:
+                opponent_near = False
+                for player in event["location_data"]:
+                    if player["teammate"] is False:
+                        playerx, playery = player["location"]
+                        distance = math.sqrt(math.pow(playerx - ballx, 2) + math.pow(playery - bally, 2))
+                        if distance < 5:
+                            opponent_near = True
+                if not opponent_near:
+                    ball_receipts_ids.append(id)
+              
+        ## filter the passes by event id
+        line_breaking_passes = {id: event for id, event in ball_receipts_data.items() if id in ball_receipts_ids}
+        
+        print(len(line_breaking_passes))
+        
+        return line_breaking_passes
+    

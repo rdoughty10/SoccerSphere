@@ -53,5 +53,10 @@ def get_linebreaking(match_id):
     lb_passes = data.get_line_breaking_passes(match_id)
     return jsonify(lb_passes)
 
+@app.route('/ballreceipts/<match_id>')
+def get_ball_receipts(match_id):
+    br = data.ball_receipts_in_space(match_id)
+    return jsonify(br)
+
 if __name__ == "__main__":
     app.run(debug=True)
