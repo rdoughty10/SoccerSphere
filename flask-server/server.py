@@ -40,7 +40,7 @@ def get_event_players(match_id):
 
 @app.route("/passes/<match_id>")
 def get_match_passes(match_id):
-    passes = [match_pass_event for match_pass_event in data.get_passes(match_id)]
+    passes = data.get_pass_locations(match_id)
     return jsonify(passes)
 
 @app.route("/complete_passes/<match_id>")

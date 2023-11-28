@@ -75,6 +75,23 @@ class Data:
         '''gets passes from a particular game'''
         return self.events[match_id].find({"pass": { '$exists': True }},{"_id": 0})
     
+    def get_pass_locations(self, match_id):
+        '''returns all passes and the locations along with it'''
+        passes = self.get_passes(match_id)
+        threesixty_data = self.get_threesixty(match_id) 
+        passes_data = {}
+        for pass_event in passes:
+            passes_data[pass_event['id']] = {}
+            passes_data[pass_event['id']]['event_data'] = pass_event
+        for threesixty in threesixty_data:
+            event_id = threesixty['event_uuid']
+            try: ## try except just in case event_id not in event (issue when limiting the events to first 100)
+                passes_data[event_id]['location_data'] = threesixty['freeze_frame']
+            except:
+                continue
+        return passes_data
+    
+    
     def get_complete_passes(self, match_id):
         '''gets complete passes from a particular game'''
         return self.events[match_id].find({"pass": { '$exists': True }, "pass.outcome": {'$exists': False}}, {"_id": 0})
