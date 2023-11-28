@@ -127,5 +127,38 @@ class Data:
                 passes_data[event_id]['location_data'] = threesixty['freeze_frame']
             except:
                 continue
-        return passes_data
+            
+        
+        locations = {}
+        linebreaking_ids = []
+        for id, event in passes_data.items():
+                        
+            initial_ball_location = event["event_data"]["location"]
+            end_location = event["event_data"]["pass"]['end_location']
+            if 'location_data' in event:
+                opponent_locations = []
+                for player in event["location_data"]:
+                    if player["teammate"] is False:
+                        initx, inity = initial_ball_location
+                        finx, finy = end_location
+                        playerx, playery = player["location"]
+                        ylim_min, y_lim_max = min([inity, finy]) - 40, min([inity, finy]) + 40 ## range of y players that could be split by the pass of the ball (have to be within 40 yards of ball)
+                        
+                        ## only passes of greater than 10 yards forward
+                        if initx + 10 < finx:
+                            ## filter locations
+                            if playerx > initx and playerx < finx and playery > ylim_min and playery < y_lim_max:
+                                opponent_locations.append([playerx, playery])
+                                
+                if len(opponent_locations) >= 2:
+                    locations[id] = {}
+                    locations[id]['initial'] = initial_ball_location
+                    locations[id]['end'] = end_location
+                    locations[id]['opponents'] = opponent_locations
+                    linebreaking_ids.append(id)
+                    
+        ## filter the passes by event id
+        line_breaking_passes = {id: event for id, event in passes_data.items() if id in linebreaking_ids}
+        
+        return line_breaking_passes
         
