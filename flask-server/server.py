@@ -45,9 +45,13 @@ def get_match_passes(match_id):
 
 @app.route("/complete_passes/<match_id>")
 def get_complete_passes(match_id):
-    passes = [match_pass_event for match_pass_event in data.get_passes(match_id)]
-    data.get_line_breaking_passes(match_id)
+    passes = data.get_complete_pass_locations(match_id)
     return jsonify(passes)
+
+@app.route('/linebreaking/<match_id>')
+def get_linebreaking(match_id):
+    lb_passes = data.get_line_breaking_passes(match_id)
+    return jsonify(lb_passes)
 
 if __name__ == "__main__":
     app.run(debug=True)

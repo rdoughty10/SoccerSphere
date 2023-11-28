@@ -79,10 +79,36 @@ class Data:
         '''gets complete passes from a particular game'''
         return self.events[match_id].find({"pass": { '$exists': True }, "pass.outcome": {'$exists': False}}, {"_id": 0})
     
+    def get_complete_pass_locations(self, match_id):
+        '''Gets complete passes and returns the locations along with it'''
+        complete_passes = self.get_complete_passes(match_id)
+        threesixty_data = self.get_threesixty(match_id) 
+        passes_data = {}
+        for pass_event in complete_passes:
+            passes_data[pass_event['id']] = {}
+            passes_data[pass_event['id']]['event_data'] = pass_event
+        for threesixty in threesixty_data:
+            event_id = threesixty['event_uuid']
+            try: ## try except just in case event_id not in event (issue when limiting the events to first 100)
+                passes_data[event_id]['location_data'] = threesixty['freeze_frame']
+            except:
+                continue
+        return passes_data
+    
     def get_line_breaking_passes(self, match_id):
         '''(INCOMPLETE) calculates line breaking passes for a game and returns those events'''
+        
         complete_passes = self.get_complete_passes(match_id)
-        event_ids = list(complete_passes.find({}, {"id": 1}))
-        print("EVENT IDS:")
-        print(event_ids)
+        threesixty_data = self.get_threesixty(match_id) 
+        passes_data = {}
+        for pass_event in complete_passes:
+            passes_data[pass_event['id']] = {}
+            passes_data[pass_event['id']]['event_data'] = pass_event
+        for threesixty in threesixty_data:
+            event_id = threesixty['event_uuid']
+            try: ## try except just in case event_id not in event (issue when limiting the events to first 100)
+                passes_data[event_id]['location_data'] = threesixty['freeze_frame']
+            except:
+                continue
+        return passes_data
         
