@@ -38,5 +38,16 @@ def get_event_players(match_id):
     event_player_data = data.get_event_player_data(match_id)
     return jsonify(event_player_data)
 
+@app.route("/passes/<match_id>")
+def get_match_passes(match_id):
+    passes = [match_pass_event for match_pass_event in data.get_passes(match_id)]
+    return jsonify(passes)
+
+@app.route("/complete_passes/<match_id>")
+def get_complete_passes(match_id):
+    passes = [match_pass_event for match_pass_event in data.get_passes(match_id)]
+    data.get_line_breaking_passes(match_id)
+    return jsonify(passes)
+
 if __name__ == "__main__":
     app.run(debug=True)

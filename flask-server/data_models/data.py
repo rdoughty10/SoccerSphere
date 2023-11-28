@@ -70,3 +70,19 @@ class Data:
     def get_threesixty(self, match_id):
         '''return the three sixty data for a particular game'''
         return self.threesixty[match_id].find({},{"_id": 0})
+    
+    def get_passes(self, match_id):
+        '''gets passes from a particular game'''
+        return self.events[match_id].find({"pass": { '$exists': True }},{"_id": 0})
+    
+    def get_complete_passes(self, match_id):
+        '''gets complete passes from a particular game'''
+        return self.events[match_id].find({"pass": { '$exists': True }, "pass.outcome": {'$exists': False}}, {"_id": 0})
+    
+    def get_line_breaking_passes(self, match_id):
+        '''(INCOMPLETE) calculates line breaking passes for a game and returns those events'''
+        complete_passes = self.get_complete_passes(match_id)
+        event_ids = list(complete_passes.find({}, {"id": 1}))
+        print("EVENT IDS:")
+        print(event_ids)
+        
