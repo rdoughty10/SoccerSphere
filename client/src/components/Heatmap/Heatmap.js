@@ -42,7 +42,6 @@ export default class Heatmap extends React.Component {
     }
 
     getPositionalData = (data) => {
-        console.log(data);
         
         if (data.length > 1) {
             let playerLocations = data[1];
@@ -55,7 +54,6 @@ export default class Heatmap extends React.Component {
                     y: evt.location[1]
                 }
             });
-            console.log(locations);
             return locations;
         }
         return data;
@@ -104,9 +102,11 @@ export default class Heatmap extends React.Component {
 
     render() {
         const { locations, scale } = this.state;
+        console.log("rerendered");
+        console.log(this.props.data)
         return (
             <div className="heatmap">
-                { this.renderScatterChart(locations, scale) }
+                { this.renderScatterChart(this.getPositionalData(this.props.data), scale) }
             </div>
         );
     }

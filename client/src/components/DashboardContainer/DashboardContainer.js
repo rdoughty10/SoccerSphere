@@ -41,7 +41,6 @@ export default class DashboardContainer extends React.Component {
                 if (keyA > keyB) return 1;
                 return 0;
             });
-            console.log(data);
 
 
             this.setState({
@@ -84,7 +83,6 @@ export default class DashboardContainer extends React.Component {
         if (matches == null) {
             return
         }
-        console.log(this.state.selectedEvent)
         return (
             <div className="dashboardContainer">
                 <h4 className="title">{matches && matches[0] && matches[0].competition ? matches[0].competition.competition_name : ""}</h4>

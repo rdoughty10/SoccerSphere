@@ -1,5 +1,5 @@
 import React from "react";
-import { ComboBox } from "carbon-components-react";
+import { ComboBox, Dropdown } from "carbon-components-react";
 import "./FilterForm.scss";
 
 export default class FilterForm extends React.Component {
@@ -22,6 +22,7 @@ export default class FilterForm extends React.Component {
     }
 
     setEvents = (events) => {
+        this.props.setEvents(null)
         this.props.setEvents(events.selectedItem)
         console.log(events.selectedItem)
         this.setState({
