@@ -8,19 +8,10 @@ import {
     CartesianGrid, 
     Tooltip, 
     XAxis, 
-    YAxis
+    YAxis,
+    Legend
 } from "recharts";
 import "./Heatmap.scss";
-
-const CustomTooltip = ({ name }) => {
-    return (
-    <div className="custom-tooltip">
-        <p className="name">{`${name}`}</p>
-    </div>
-    );
-
-    return null;
-};
 
 export default class Heatmap extends React.Component {
 
@@ -83,9 +74,9 @@ export default class Heatmap extends React.Component {
             console.log(event_info.team.name)
             console.log(this.state.homeTeam)
             if (event_info.team.name == this.state.homeTeam){
-                return [locations, locations1];
+                return [[this.state.homeTeam, locations], [this.state.awayTeam, locations1]];
             }else {
-                return [locations1, locations];
+                return [[this.state.homeTeam, locations1], [this.state.awayTeam, locations]];;
             }
         }
         return data;
@@ -126,9 +117,10 @@ export default class Heatmap extends React.Component {
                 <ReferenceArea x1={0} x2={120} y1={0} y2={80} fillOpacity={0} stroke="black" /> {/* Pitch Outline */}
                 <XAxis type="number" dataKey="x" hide domain={[0,120]}/>
                 <YAxis type="number" dataKey="y" hide domain={[0,80]}/>
-                <Tooltip cursor={{ strokeDasharray: '3 3' }} />
-                <Scatter name="Heatmap" data={data[0]} fill="#FF0000"/>
-                <Scatter name="Heatmap" data={data[1]} fill="#0000FF"/>
+                <Tooltip cursor={{ strokeDasharray: '3 3' }}/>
+                <Legend />
+                <Scatter name={data[0][0]} data={data[0][1]} fill="#FF0000"/>
+                <Scatter name={data[1][0]} data={data[1][1]} fill="#0000FF"/>
             </ScatterChart>
         </div>
     );
