@@ -22,8 +22,11 @@ export default class DashboardContainer extends React.Component {
     }
 
     setMatch = async (match) => {
+        console.log(match)
         this.setState({
-            match
+            match,
+            homeTeam: match.home_team.home_team_name,
+            awayTeam: match.away_team.away_team_name
         });
         if (match) {
             const res = await fetch(`/event_players/${match.match_id}`)
@@ -46,6 +49,7 @@ export default class DashboardContainer extends React.Component {
                 events: data
             });
         }
+
     }
 
     setEvents = (selectedEvent) => {
@@ -102,6 +106,8 @@ export default class DashboardContainer extends React.Component {
                                         <div className="bx--col">
                                             <Heatmap 
                                                 data={this.state.selectedEvent}
+                                                homeTeam={this.state.homeTeam}
+                                                awayTeam={this.state.awayTeam}
                                             />
                                         </div>)) : <div /> 
                                 }

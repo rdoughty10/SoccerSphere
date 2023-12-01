@@ -26,11 +26,14 @@ export default class Heatmap extends React.Component {
 
     constructor(props) {
         super(props);
+        console.log(props)
 
         this.state = {
             locations: [],
             vertical: window.innerWidth <= 500,
-            scale: window.innerWidth <= 500 ? 4.5 : 5
+            scale: window.innerWidth <= 500 ? 4.5 : 5,
+            homeTeam: props.homeTeam,
+            awayTeam: props.awayTeam
         };
 
         this.renderScatterChart = this.renderScatterChart.bind(this);
@@ -55,6 +58,8 @@ export default class Heatmap extends React.Component {
         
         if (data.length > 1) {
             let playerLocations = data[1];
+            let event_info = data[0];
+
             console.log(playerLocations);
             const locations = playerLocations.filter(evt => {
                 return evt.teammate;
@@ -74,7 +79,14 @@ export default class Heatmap extends React.Component {
             });
             console.log(locations)
             console.log(locations1)
-            return [locations, locations1];
+
+            console.log(event_info.team.name)
+            console.log(this.state.homeTeam)
+            if (event_info.team.name == this.state.homeTeam){
+                return [locations, locations1];
+            }else {
+                return [locations1, locations];
+            }
         }
         return data;
     }
