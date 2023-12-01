@@ -45,17 +45,21 @@ class Data:
         '''return lineups (lineups are 2 documents per collection)'''
         return self.lineups[match_id].find({},{"_id": 0})
 
-    def get_events(self, match_id, remove={}):
+    def get_events(self, match_id, remove={}, filter=None):
         '''return the events for a particular game (returns list of documents)'''
+        if filter is not None:     
+            filter = filter.replace('_', ' ').replace("1", "'") 
+            return self.events[match_id].find({f"type.name": filter}, {"_id": 0})
         return self.events[match_id].find({},{"_id": 0})
     
-    def get_event_player_data(self, match_id):
+    def get_event_player_data(self, match_id, filter=None):
         '''
             Returns event data with corresponding player location data in form
             {event_id: {event_info: {event_data}, player_locations: {1: {player_info}, 2: {player_info}}, event: ...}
         '''
-        events = self.get_events(match_id, remove={})[:100]
-        threesixty_data = self.get_threesixty(match_id) 
+        events = self.get_events(match_id, remove={}, filter=filter)[:100]
+        threesixty_data = self.get_threesixty(match_id)
+        
         player_event_data = {}
         for event in events:
             player_event_data[event['id']] = {}
@@ -66,6 +70,7 @@ class Data:
                 player_event_data[event_id]['location_data'] = threesixty['freeze_frame']
             except:
                 continue
+        
         return player_event_data
 
     def get_threesixty(self, match_id):
