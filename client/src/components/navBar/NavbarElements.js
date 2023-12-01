@@ -3,7 +3,7 @@ import styled from "styled-components";
 
  
 export const Nav = styled.nav`
-  background: #035E7B;
+  background: black;
   color: white;
   height: 12vh;
   display: flex;

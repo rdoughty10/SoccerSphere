@@ -1,0 +1,17 @@
+.navTitle {
+    display: flex;
+    align-items: center;
+  }
+  
+  /* .logo-img 
+    max-width: 40px; /* Adjust the size of the logo as needed 
+    margin-right: 10px; /* Add spacing between the logo and text 
+  } */
+
+  .logo-img {
+    top: 0;
+    right: 0;
+    width: 6vw;
+    height: 10vh;
+    background-image: url('logo4.jpg');
+}
