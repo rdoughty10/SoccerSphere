@@ -20,18 +20,31 @@ export default class DashboardContainer extends React.Component {
         };
         this.setMatch = this.setMatch.bind(this);
         this.setEvents= this.setEvents.bind(this);
+        this.setFilter = this.setFilter.bind(this);
     }
 
     setMatch = async (match) => {
         console.log(match)
+        console.log(this.state.filter)
+        
         this.setState({
             match,
             homeTeam: match.home_team.home_team_name,
             awayTeam: match.away_team.away_team_name
         });
         if (match) {
-            const res = await fetch(`/event_players/${match.match_id}`)
+            let res = await fetch(`/event_players/${match.match_id}`);
+            if (this.state.filter == "Passes") {
+                res = await fetch(`/event_players/${match.match_id}/Pass`)
+            } else if (this.state.filter == "Shots") {
+                res = await fetch(`/event_players/${match.match_id}/Shots`)
+            } else if (this.state.filter == "Line-Breaking Passes") {
+                res = await fetch(`/linebreaking/${match.match_id}`)
+            } else if (this.state.filter == "Receipts in Space") {
+                res = await fetch(`ballreceipts/${match.match_id}`)
+            }
             const events = await res.json();
+            console.log(res.json)
             let data = [];
             for (var i in events) {
                 data.push(events[i])
@@ -62,6 +75,16 @@ export default class DashboardContainer extends React.Component {
         this.setState({
             selectedEvent: data
         });
+    }
+
+    setFilter = async (selectedFilter) => {
+        console.log(selectedFilter)
+        
+        this.setState({
+            filter: selectedFilter
+        });
+        console.log(this.state.filter)
+        this.setMatch(this.state.match)
     }
 
 
@@ -97,6 +120,7 @@ export default class DashboardContainer extends React.Component {
                     setMatch={this.setMatch}
                     events={this.state.events}
                     setEvents={this.setEvents}
+                    setFilter={this.setFilter}
                 />
                 { this.state.events ?
                     <div>

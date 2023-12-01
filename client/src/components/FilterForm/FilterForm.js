@@ -32,11 +32,13 @@ export default class FilterForm extends React.Component {
     }
 
     setFilter = (filter) => {
-        this.props.setFilter(filter.setFilter)
+        console.log(filter.selectedItem)
         this.setState({
             filter: filter.selectedItem
-        })
+        });
         console.log(this.state.filter)
+        this.props.setFilter(filter.selectedItem)
+        
     }
 
     render() {

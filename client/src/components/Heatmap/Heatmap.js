@@ -73,7 +73,7 @@ export default class Heatmap extends React.Component {
 
             console.log(event_info.team.name)
             console.log(this.state.homeTeam)
-            if (event_info.team.name == this.state.homeTeam){
+            if (event_info.team.name === this.state.homeTeam){
                 return [[this.state.homeTeam, locations], [this.state.awayTeam, locations1]];
             }else {
                 return [[this.state.homeTeam, locations1], [this.state.awayTeam, locations]];;
