@@ -11,6 +11,7 @@ export default class DashboardContainer extends React.Component {
         this.state = {
             events: [],
             selectedEvent: [],
+            filter: null, 
             match: null,
             matchData: [],
             homeTeam: null,
@@ -62,6 +63,7 @@ export default class DashboardContainer extends React.Component {
             selectedEvent: data
         });
     }
+
 
     setStateAsync(state) {
         return new Promise((resolve) => {
