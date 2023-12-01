@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Routes, Route }
 import DashboardContainer from "./components/DashboardContainer";
 import NavigBar from "./components/navBar/navBar";
 import About from "./pages/about";
-import Home from './pages/landing';
+import Home from './pages/landing2';
 
 import "./App.scss";
 import "./App.css";
