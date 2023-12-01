@@ -34,8 +34,13 @@ def get_match(match_id):
     return jsonify(match_data)
 
 @app.route("/event_players/<match_id>/<filter>")
-def get_event_players(match_id, filter):
+def get_event_players_filtered(match_id, filter):
     event_player_data = data.get_event_player_data(match_id, filter)
+    return jsonify(event_player_data)
+
+@app.route("/event_players/<match_id>")
+def get_event_players(match_id):
+    event_player_data = data.get_event_player_data(match_id)
     return jsonify(event_player_data)
 
 @app.route("/passes/<match_id>")
