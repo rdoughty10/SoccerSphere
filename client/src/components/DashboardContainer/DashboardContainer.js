@@ -28,7 +28,6 @@ export default class DashboardContainer extends React.Component {
         if (match) {
             const res = await fetch(`/event_players/${match.match_id}`)
             const events = await res.json();
-            
             let data = [];
             for (var i in events) {
                 data.push(events[i])

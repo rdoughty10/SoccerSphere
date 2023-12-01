@@ -12,6 +12,16 @@ import {
 } from "recharts";
 import "./Heatmap.scss";
 
+const CustomTooltip = ({ name }) => {
+    return (
+    <div className="custom-tooltip">
+        <p className="name">{`${name}`}</p>
+    </div>
+    );
+
+    return null;
+};
+
 export default class Heatmap extends React.Component {
 
     constructor(props) {
@@ -54,7 +64,17 @@ export default class Heatmap extends React.Component {
                     y: evt.location[1]
                 }
             });
-            return locations;
+            const locations1 = playerLocations.filter(evt => {
+                return !evt.teammate;
+            }).map(evt => {
+                return {
+                    x: evt.location[0],
+                    y: evt.location[1]
+                }
+            });
+            console.log(locations)
+            console.log(locations1)
+            return [locations, locations1];
         }
         return data;
     }
@@ -95,7 +115,8 @@ export default class Heatmap extends React.Component {
                 <XAxis type="number" dataKey="x" hide domain={[0,120]}/>
                 <YAxis type="number" dataKey="y" hide domain={[0,80]}/>
                 <Tooltip cursor={{ strokeDasharray: '3 3' }} />
-                <Scatter name="Heatmap" data={data} fill="#777777"/>
+                <Scatter name="Heatmap" data={data[0]} fill="#FF0000"/>
+                <Scatter name="Heatmap" data={data[1]} fill="#0000FF"/>
             </ScatterChart>
         </div>
     );
