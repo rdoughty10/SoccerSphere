@@ -13,6 +13,10 @@ import {
 } from "recharts";
 import "./Heatmap.scss";
 
+const RenderNoShape = (props)=>{ 
+    return null; 
+   }
+
 export default class Heatmap extends React.Component {
 
     constructor(props) {
@@ -24,7 +28,7 @@ export default class Heatmap extends React.Component {
             vertical: window.innerWidth <= 500,
             scale: window.innerWidth <= 500 ? 4.5 : 5,
             homeTeam: props.homeTeam,
-            awayTeam: props.awayTeam
+            awayTeam: props.awayTeam,
         };
 
         this.renderScatterChart = this.renderScatterChart.bind(this);
@@ -50,7 +54,9 @@ export default class Heatmap extends React.Component {
         if (data.length > 1) {
             let playerLocations = data[1];
             let event_info = data[0];
+            console.log(event_info)
 
+            
             console.log(playerLocations);
             const locations = playerLocations.filter(evt => {
                 return evt.teammate;
@@ -73,11 +79,24 @@ export default class Heatmap extends React.Component {
 
             console.log(event_info.team.name)
             console.log(this.state.homeTeam)
+            let info;
             if (event_info.team.name === this.state.homeTeam){
-                return [[this.state.homeTeam, locations], [this.state.awayTeam, locations1]];
+                info = [[this.state.homeTeam, locations], [this.state.awayTeam, locations1]];
             }else {
-                return [[this.state.homeTeam, locations1], [this.state.awayTeam, locations]];;
+                info = [[this.state.homeTeam, locations1], [this.state.awayTeam, locations]];;
             }
+            if (event_info.type.name == "Pass") {
+                const start = {
+                    x: event_info.location[0],
+                    y: event_info.location[1]
+                }
+                const finish = {
+                    x: event_info.pass.end_location[0],
+                    y: event_info.pass.end_location[1]
+                }
+                info.push([start, finish])
+            }
+            return info
         }
         return data;
     }
@@ -119,8 +138,10 @@ export default class Heatmap extends React.Component {
                 <YAxis type="number" dataKey="y" hide domain={[0,80]}/>
                 <Tooltip cursor={{ strokeDasharray: '3 3' }}/>
                 <Legend />
+                {data.length > 2 ? <ReferenceLine stroke="black" segment={data[2]}/> : <></>}
                 <Scatter name={data[0][0]} data={data[0][1]} fill="#FF0000"/>
                 <Scatter name={data[1][0]} data={data[1][1]} fill="#0000FF"/>
+                
             </ScatterChart>
         </div>
     );
