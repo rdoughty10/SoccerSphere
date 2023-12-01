@@ -8,6 +8,7 @@ export default class FilterForm extends React.Component {
 
         this.state = {
             match: null,
+            filter: null,
             events: []
         }
 
@@ -30,6 +31,14 @@ export default class FilterForm extends React.Component {
         });
     }
 
+    setFilter = (filter) => {
+        this.props.setFilter(filter.setFilter)
+        this.setState({
+            filter: filter.selectedItem
+        })
+        console.log(this.state.filter)
+    }
+
     render() {
         return (
             <div className = "filterForm">
@@ -42,6 +51,17 @@ export default class FilterForm extends React.Component {
                     items={this.props.matches}
                     itemToString={item => (item ? `${item.home_team.home_team_name} (${item.home_score}) vs ${item.away_team.away_team_name} (${item.away_score})` : "")}
                     onChange={this.setMatch}
+                />
+
+                <ComboBox
+                    id="EventFilter"
+                    title="Event Type:"
+                    titleText="Event Type:"
+                    helperText="Filter the types of events"
+                    light 
+                    items={["Passes", "Shots", "Line-Breaking Passes", "Receipts in Space"]}
+                    //itemToString={item => (item ? `${item.home_team.home_team_name} (${item.home_score}) vs ${item.away_team.away_team_name} (${item.away_score})` : "")}
+                    onChange={this.setFilter}
                 />
 
                 <ComboBox
