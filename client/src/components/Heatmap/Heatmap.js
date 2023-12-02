@@ -83,9 +83,20 @@ export default class Heatmap extends React.Component {
             if (event_info.team.name === this.state.homeTeam){
                 info = [[this.state.homeTeam, locations], [this.state.awayTeam, locations1]];
             }else {
+                for (let i = 0; i < locations.length; i++) {
+                    locations[i]['x'] = 120 - locations[i]['x'];
+                    locations[i]['y'] = 80 - locations[i]['y'];
+                }
+                for (let i = 0; i < locations1.length; i++) {
+                    locations1[i]['x'] = 120 - locations1[i]['x'];
+                    locations1[i]['y'] = 80 - locations1[i]['y'];
+                }
+                console.log('Change Directions')
+                console.log(locations[0]['x'])
+                
                 info = [[this.state.homeTeam, locations1], [this.state.awayTeam, locations]];;
             }
-            if (event_info.type.name == "Pass") {
+            if (event_info.type.name == "Pass" ) {
                 const start = {
                     x: event_info.location[0],
                     y: event_info.location[1]
@@ -93,6 +104,29 @@ export default class Heatmap extends React.Component {
                 const finish = {
                     x: event_info.pass.end_location[0],
                     y: event_info.pass.end_location[1]
+                }
+                if (event_info.team.name === this.state.awayTeam){
+                    start['x'] = 120 - start['x']
+                    start['y'] = 80 - start['y']
+                    finish['x'] = 120 - finish['x']
+                    finish['y'] = 80 - finish['y']
+                }
+                info.push([start, finish])
+
+            } else if (event_info.type.name == "Shot") {
+                const start = {
+                    x: event_info.location[0],
+                    y: event_info.location[1]
+                }
+                const finish = {
+                    x: event_info.shot.end_location[0],
+                    y: event_info.shot.end_location[1]
+                }
+                if (event_info.team.name === this.state.awayTeam){
+                    start['x'] = 120 - start['x']
+                    start['y'] = 80 - start['y']
+                    finish['x'] = 120 - finish['x']
+                    finish['y'] = 80 - finish['y']
                 }
                 info.push([start, finish])
             }

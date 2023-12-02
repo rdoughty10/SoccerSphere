@@ -29,6 +29,7 @@ export default class FilterForm extends React.Component {
         this.setState({
             events: events.selectedItem
         });
+        console.log(this.props.events)
     }
 
     setFilter = (filter) => {
@@ -61,7 +62,7 @@ export default class FilterForm extends React.Component {
                     titleText="Event Type:"
                     helperText="Filter the types of events"
                     light 
-                    items={["Passes", "Shots", "Line-Breaking Passes", "Receipts in Space"]}
+                    items={["Goals", "Shots", "Passes", "Pressures", "Duels", "Carries", "Ball Recoveries", "Line-Breaking Passes", "Receipts in Space"]}
                     //itemToString={item => (item ? `${item.home_team.home_team_name} (${item.home_score}) vs ${item.away_team.away_team_name} (${item.away_score})` : "")}
                     onChange={this.setFilter}
                 />

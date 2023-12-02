@@ -57,7 +57,9 @@ class Data:
             Returns event data with corresponding player location data in form
             {event_id: {event_info: {event_data}, player_locations: {1: {player_info}, 2: {player_info}}, event: ...}
         '''
-        events = self.get_events(match_id, remove={}, filter=filter)[:100]
+        events = self.get_events(match_id, remove={}, filter=filter)
+        if filter is None:
+            events = events[:200]
         threesixty_data = self.get_threesixty(match_id)
         
         player_event_data = {}
@@ -171,6 +173,22 @@ class Data:
     def get_ball_receipts(self, match_id):
         '''Gets all ball receipts'''
         return self.events[match_id].find({"type.name": "Ball Receipt*"}, {"_id": 0})
+    
+    def get_goals(self, match_id):
+        '''returns all goals for a game'''
+        goals = self.events[match_id].find({"type.name": "Shot", "shot.outcome.name":"Goal"}, {"_id": 0})
+        threesixty_data = self.get_threesixty(match_id)
+        goal_event_data = {}
+        for goal_event in goals:
+            goal_event_data[goal_event['id']] = {}
+            goal_event_data[goal_event['id']]['event_data'] = goal_event
+        for threesixty in threesixty_data:
+            event_id = threesixty['event_uuid']
+            try: ## try except just in case event_id not in event (issue when limiting the events to first 100)
+                goal_event_data[event_id]['location_data'] = threesixty['freeze_frame']
+            except:
+                continue
+        return goal_event_data
 
         
     def ball_receipts_in_space(self, match_id):

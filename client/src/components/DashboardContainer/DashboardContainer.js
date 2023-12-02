@@ -37,11 +37,21 @@ export default class DashboardContainer extends React.Component {
             if (this.state.filter == "Passes") {
                 res = await fetch(`/event_players/${match.match_id}/Pass`)
             } else if (this.state.filter == "Shots") {
-                res = await fetch(`/event_players/${match.match_id}/Shots`)
+                res = await fetch(`/event_players/${match.match_id}/Shot`)
+            } else if (this.state.filter == "Pressures") {
+                res = await fetch(`/event_players/${match.match_id}/Pressure`)
+            } else if (this.state.filter == "Duels") {
+                res = await fetch(`/event_players/${match.match_id}/Duel`)
+            } else if (this.state.filter == "Carries") {
+                res = await fetch(`/event_players/${match.match_id}/Carry`)
+            } else if (this.state.filter == "Ball Recoveries") {
+                res = await fetch(`/event_players/${match.match_id}/Ball_Recovery`)
             } else if (this.state.filter == "Line-Breaking Passes") {
                 res = await fetch(`/linebreaking/${match.match_id}`)
             } else if (this.state.filter == "Receipts in Space") {
-                res = await fetch(`ballreceipts/${match.match_id}`)
+                res = await fetch(`/ballreceipts/${match.match_id}`)
+            } else if (this.state.filter == "Goals") {
+                res = await fetch(`/goals/${match.match_id}`)
             }
             const events = await res.json();
             console.log(res.json)

@@ -63,5 +63,10 @@ def get_ball_receipts(match_id):
     br = data.ball_receipts_in_space(match_id)
     return jsonify(br)
 
+@app.route('/goals/<match_id>')
+def get_goals(match_id):
+    goals = data.get_goals(match_id)
+    return jsonify(goals)
+
 if __name__ == "__main__":
     app.run(debug=True)
