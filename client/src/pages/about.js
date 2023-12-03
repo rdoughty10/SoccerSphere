@@ -39,23 +39,34 @@ function About() {
 			<div className="MoreInfo">
 				<div className="Technology">
 					<h4 className = "AboutH4">Back-End</h4>
-						<p>The technology that was used for the back-end was MongoDB and python</p>
+						<p>The technology that was used for the back-end was MongoDB and python. MongoDB was used as the database for storing the data retrieved from statsbomb360. Python was used as the API endpoint code as well as for starting the server</p>
 				</div>
 				<div className="Database">
 					<h4 className = "AboutH4">Front-End</h4>
-						<p>The frontend used react js to display different webpages and data</p>
+						<p>The frontend used react js to display different webpages and data. Some react libraries were used to display the graphics on the websites. Additionally, the images were displayed using react</p>
 				</div>
 				<div className="Sources">
 					<h4 className = "AboutH4">Sources</h4>
-						<p>The website collected data from statsbomb</p>
+						<p>The website collected data from statsbomb. statsbomb360 is a general sports website that gathers data from all football matches. All the data on this site was gathered from statsbomb. Statsbomb does not have the graphic we have.</p>
 				</div>
 			</div>
-			<header className ="Arch-header">
-			Data Architecture
-			</header>
+			<h4 className="TechHeader">Data Architecture</h4>
 			<div className="ImageContainer">	
 				<div className="ArchImage">
-					{/* <img src="/Images/image12.png" alt="Background Image 12" />*/}
+					{/* <img src="/Images/dataArchitecture.jpg" alt="dataArchitecture.jpg" />*/}
+				</div>
+			</div>
+			<h4 className="TechHeader">Technology</h4>
+			<div className="TechImages">
+			
+				<div className="StatsBombImage">
+					{/* <img src="/Images/image12.png" alt="Background Image 13" />*/}
+				</div>
+				<div className="MongoDBImage">
+					{/* <img src="/Images/image12.png" alt="Background Image 14" />*/}
+				</div>
+				<div className="ReactImage">
+					{/* <img src="/Images/image12.png" alt="Background Image 15" />*/}
 				</div>
 			</div>
 			</main>

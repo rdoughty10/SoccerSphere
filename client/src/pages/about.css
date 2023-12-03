@@ -44,14 +44,14 @@
   }
 
   .BackgroundDiv{
-    text-align: left;
+    text-align: justify;
     padding: 10px;
     margin-left:20%;
     margin-right: 2%;
   }
 
   .ValueDiv{
-    text-align: left;
+    text-align: justify;
     padding: 10px;
     margin-right:20%;
     margin-left: 2%;
@@ -67,8 +67,7 @@
   }
 
   .SampleImage{
-    
-    width: 64%;
+    width: 58%;
     height: 300px;
     background-image: url('Images/image12.png');
     background-size: 100% 60vh;
@@ -85,9 +84,9 @@
     display: flex;
     justify-content: space-between;
     margin-top: 40px;
+    margin-bottom: 40px;
     margin-left: 20%;
     margin-right: 20%;
-    text-align: center;
   }
 
   .MoreInfo div{
@@ -96,8 +95,12 @@
     margin: 0 auto;
   }
 
-  .App-link {
-    color: #61dafb;
+  .MoreInfo h4{
+    text-align: center;
+  }
+
+  .MoreInfo p{
+    text-align: justify;
   }
 
   .Arch-header {
@@ -113,10 +116,57 @@
   }
 
   .ArchImage{
-    width: 50%;
+    width: 58%;
     height: 225px;
     background-image: url('Images/dataArchitecture.jpg');
     background-size: 100% 37vh;
     background-position: center;
-    padding: 0px;
+    padding: 20px;
+  }
+
+  .TechHeader{
+    font-weight: bold;
+    margin-top: 20px;
+  }
+
+  .TechImages{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    margin-left: 20%;
+    margin-right: 20%; 
+
+  }
+
+  .StatsBombImage{
+    width: 20%;
+    height: 115px;
+    background-image: url('Images/image13.png');
+    background-size: 100% 19vh;
+    background-position: center;
+    padding: 20px;
+  }
+
+  .MongoDBImage{
+    width: 20%;
+    height: 120px;
+    background-image: url('Images/image14.png');
+    background-size: 100% 20vh;
+    background-position: center;
+    padding: 20px;
+  }
+
+  .ReactImage{
+    width: 20%;
+    height: 85px;
+    background-image: url('Images/image15.png');
+    background-size: 100% 14vh;
+    background-position: center;
+    padding: 20px;
+  }
+
+
+  .App-link {
+    color: #61dafb;
   }
