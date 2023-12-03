@@ -123,8 +123,8 @@ export default class TeamsDashboardContainer extends React.Component {
         }
         return (
             <div className="dashboardContainer">
-                {/* <h4 className="title">{matches && matches[0] && matches[0].competition ? matches[0].competition.competition_name : ""}</h4> */}
-                {/* <h6 className="subTitle">Season: {matches && matches[0] && matches[0].season ? matches[0].season.season_name : ""}</h6> */}
+                {/* <h4 className="title">{matches && matches[0] && matches[0].competition ? matches[0].competition.competition_name : ""}</h4>
+                <h6 className="subTitle">Season: {matches && matches[0] && matches[0].season ? matches[0].season.season_name : ""}</h6> */}
                 <TeamsFilterForm
                     teams={teams}
                     setTeam={this.setTeam}
