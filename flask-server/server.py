@@ -29,11 +29,13 @@ def get_match(match_id):
 
 @app.route("/event_players_team/<team_id>/<filter>/<for_team>")
 def get_event_player_team_filtered(team_id, filter, for_team):
-    is_own_team = True
+    
     if for_team == 'Against':
-        is_own_team = False
+        event_player_data = data.get_event_player_team_data(team_id, filter, for_team=False)
+    else:
+        event_player_data = data.get_event_player_team_data(team_id, filter, for_team=True)
+
         
-    event_player_data = data.get_event_player_team_data(team_id, filter, for_team=is_own_team)
     return jsonify(event_player_data)
 
 

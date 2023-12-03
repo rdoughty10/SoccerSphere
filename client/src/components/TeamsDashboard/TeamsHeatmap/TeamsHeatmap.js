@@ -70,6 +70,12 @@ export default class TeamsHeatmap extends React.Component {
                         x: event_info.pass.end_location[0],
                         y: event_info.pass.end_location[1]
                     }
+                    if (event_info.team.id != this.state.team){
+                        start['x'] = 120 - start['x']
+                        start['y'] = 80 - start['y']
+                        finish['x'] = 120 - finish['x']
+                        finish['y'] = 80 - finish['y']
+                    }
                     info.push([start, finish])
 
                 } else if (event_info.type.name == "Shot") {
@@ -80,6 +86,12 @@ export default class TeamsHeatmap extends React.Component {
                     const finish = {
                         x: event_info.shot.end_location[0],
                         y: event_info.shot.end_location[1]
+                    }
+                    if (event_info.team.id != this.state.team){
+                        start['x'] = 120 - start['x']
+                        start['y'] = 80 - start['y']
+                        finish['x'] = 120 - finish['x']
+                        finish['y'] = 80 - finish['y']
                     }
                     info.push([start, finish])
                 }

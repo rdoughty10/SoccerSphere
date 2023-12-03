@@ -100,7 +100,7 @@ class Data:
                 events = self.events[match_id].find({f"type.name": filter_word}, {"_id": 0})
             elif for_team:
                 events = self.events[match_id].find({f"type.name": filter_word, "team.id": team}, {"_id": 0})
-            elif for_team: 
+            elif not for_team: 
                 events = self.events[match_id].find({f"type.name": filter_word, "team.id": {"$ne": team}}, {"_id": 0})
                             
             for event in events:
