@@ -27,8 +27,7 @@ export default class TeamsHeatmap extends React.Component {
             locations: [],
             vertical: window.innerWidth <= 500,
             scale: window.innerWidth <= 500 ? 4.5 : 5,
-            homeTeam: props.homeTeam,
-            awayTeam: props.awayTeam,
+            team: props.team,
         };
 
         this.renderScatterChart = this.renderScatterChart.bind(this);
@@ -51,49 +50,57 @@ export default class TeamsHeatmap extends React.Component {
 
     getPositionalData = (data) => {
 
+        console.log('Getting positional data')
         // need to loop over the data
+        console.log(data)
 
+        let info = [];
         if (data.length > 1) {
-            let event_info = data[0];
+            
+            for (let i = 0; i < data.length; i++){
+                let event_info = data[i]['event_data'];
 
-            let info;
-            if (event_info.type.name == "Pass" ) {
-                const start = {
-                    x: event_info.location[0],
-                    y: event_info.location[1]
-                }
-                const finish = {
-                    x: event_info.pass.end_location[0],
-                    y: event_info.pass.end_location[1]
-                }
-                if (event_info.team.name === this.state.awayTeam){
-                    start['x'] = 120 - start['x']
-                    start['y'] = 80 - start['y']
-                    finish['x'] = 120 - finish['x']
-                    finish['y'] = 80 - finish['y']
-                }
-                info.push([start, finish])
+                if (event_info.type.name == "Pass" ) {
+                    const start = {
+                        x: event_info.location[0],
+                        y: event_info.location[1]
+                    }
+                    const finish = {
+                        x: event_info.pass.end_location[0],
+                        y: event_info.pass.end_location[1]
+                    }
+                    // if (event_info.team.name === this.state.awayTeam){
+                    //     start['x'] = 120 - start['x']
+                    //     start['y'] = 80 - start['y']
+                    //     finish['x'] = 120 - finish['x']
+                    //     finish['y'] = 80 - finish['y']
+                    // }
+                    info.push([start, finish])
 
-            } else if (event_info.type.name == "Shot") {
-                const start = {
-                    x: event_info.location[0],
-                    y: event_info.location[1]
+                } else if (event_info.type.name == "Shot") {
+                    const start = {
+                        x: event_info.location[0],
+                        y: event_info.location[1]
+                    }
+                    const finish = {
+                        x: event_info.shot.end_location[0],
+                        y: event_info.shot.end_location[1]
+                    }
+                    // if (event_info.team.name === this.state.awayTeam){
+                    //     start['x'] = 120 - start['x']
+                    //     start['y'] = 80 - start['y']
+                    //     finish['x'] = 120 - finish['x']
+                    //     finish['y'] = 80 - finish['y']
+                    // }
+                    info.push([start, finish])
                 }
-                const finish = {
-                    x: event_info.shot.end_location[0],
-                    y: event_info.shot.end_location[1]
-                }
-                if (event_info.team.name === this.state.awayTeam){
-                    start['x'] = 120 - start['x']
-                    start['y'] = 80 - start['y']
-                    finish['x'] = 120 - finish['x']
-                    finish['y'] = 80 - finish['y']
-                }
-                info.push([start, finish])
             }
-            return info
         }
-        return data;
+        console.log(info)
+        info.map((event_location) => {
+            console.log(event_location)
+        })
+        return info;
     }
 
     renderScatterChart = (data, scale) => (
@@ -133,9 +140,21 @@ export default class TeamsHeatmap extends React.Component {
                 <YAxis type="number" dataKey="y" hide domain={[0,80]}/>
                 <Tooltip cursor={{ strokeDasharray: '3 3' }}/>
                 <Legend />
-                {data.length > 2 ? <ReferenceLine stroke="black" segment={data[2]}/> : <></>}
+                {/* <ReferenceLine stroke="black" segment={data[0]}/>
+                <ReferenceLine stroke="black" segment={data[1]}/>
+
+                {data.map((event_location)=>{
+                   <ReferenceLine stroke="black" segment={event_location}/>
+                })} */}
+
+                {data.map((event_location, index) => (
+                    <ReferenceLine key={index} stroke="gray" segment={event_location} />
+                ))}
+                
+
+                {/* {data.length > 2 ? <ReferenceLine stroke="black" segment={data[2]}/> : <></>}
                 <Scatter name={data[0][0]} data={data[0][1]} fill="#FF0000"/>
-                <Scatter name={data[1][0]} data={data[1][1]} fill="#0000FF"/>
+                <Scatter name={data[1][0]} data={data[1][1]} fill="#0000FF"/> */}
                 
             </ScatterChart>
         </div>

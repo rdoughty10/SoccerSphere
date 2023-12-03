@@ -50,6 +50,14 @@ function About() {
 						<p>The website collected data from statsbomb</p>
 				</div>
 			</div>
+			<header className ="Arch-header">
+			Data Architecture
+			</header>
+			<div className="ImageContainer">	
+				<div className="ArchImage">
+					{/* <img src="/Images/image12.png" alt="Background Image 12" />*/}
+				</div>
+			</div>
 			</main>
 		</div>
 
