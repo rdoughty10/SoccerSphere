@@ -32,7 +32,7 @@ export default class TeamsDashboardContainer extends React.Component {
         });
         
         let data = [];
-
+        console.log(this.state.eventType)
         if (team && this.state.filter && this.state.eventType){
             let res;
             if (this.state.filter == "Passes"){
@@ -60,8 +60,8 @@ export default class TeamsDashboardContainer extends React.Component {
     }
 
     setEventTypes = async (selectedEventType) => {
-        this.setState({ 
-            eventType: selectedEventType
+        this.setState({ eventType: selectedEventType }, () => {
+            this.setTeam(this.state.team)
         });
     }
 
