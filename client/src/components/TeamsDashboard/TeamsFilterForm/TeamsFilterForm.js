@@ -62,7 +62,7 @@ export default class TeamsFilterForm extends React.Component {
                     helperText="Select a team"
                     light 
                     items={this.props.teams}
-                    //itemToString={item => (item ? this.props.teams_id[item] : "")}
+                    itemToString={item => (item ? this.props.teams_id[item] : "")}
                     onChange={this.setTeam}
                 />
 
