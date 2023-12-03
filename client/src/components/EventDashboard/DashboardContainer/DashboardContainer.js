@@ -27,6 +27,18 @@ export default class DashboardContainer extends React.Component {
         console.log(match)
         console.log(this.state.filter)
         
+        if (match == null) {
+            this.setState({
+                events: [],
+                selectedEvent: [],
+                filter: null, 
+                matchData: [],
+                homeTeam: null,
+                awayTeam: null,
+            })
+            return;
+        }
+
         this.setState({
             match,
             homeTeam: match.home_team.home_team_name,
@@ -54,11 +66,14 @@ export default class DashboardContainer extends React.Component {
                 res = await fetch(`/goals/${match.match_id}`)
             }
             const events = await res.json();
-            console.log(res.json)
+            console.log(events)
             let data = [];
             for (var i in events) {
-                data.push(events[i])
+                if (events[i]['location_data'] != null) {
+                    data.push(events[i])   
+                }
             } 
+            console.log(data);
             data.sort(function(a, b) {
                 var keyA = a.event_data.timestamp;
                 var keyB = b.event_data.timestamp;

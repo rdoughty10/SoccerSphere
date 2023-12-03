@@ -83,6 +83,7 @@ class Data:
                 player_event_data[event_id]['location_data'] = threesixty['freeze_frame']
             except:
                 continue
+            
         
         return player_event_data
     
@@ -105,7 +106,6 @@ class Data:
             for event in events:
                 player_event_data[event['id']] = {}
                 player_event_data[event['id']]['event_data'] = event
-           
                 
         return player_event_data
 
