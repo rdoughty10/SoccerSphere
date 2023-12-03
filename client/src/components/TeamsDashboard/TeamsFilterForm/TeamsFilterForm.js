@@ -72,7 +72,7 @@ export default class TeamsFilterForm extends React.Component {
                     titleText="For or Against:"
                     helperText="Filter the types of events"
                     light 
-                    items={["For", "Against", "Both"]}
+                    items={["For", "Against"]}
                     onChange={this.setEventTypes}
                 />
 

@@ -33,12 +33,12 @@ export default class TeamsDashboardContainer extends React.Component {
         
         let data = [];
 
-        if (team && this.state.filter){
+        if (team && this.state.filter && this.state.eventType){
             let res;
             if (this.state.filter == "Passes"){
-                res = await fetch(`/event_players_team/${team}/Pass`);
+                res = await fetch(`/event_players_team/${team}/Pass/${this.state.eventType}`);
             } else if (this.state.filter == "Shots"){
-                res = await fetch(`/event_players_team/${team}/Shot`);
+                res = await fetch(`/event_players_team/${team}/Shot/${this.state.eventType}`);
             } else if (this.state.filter == "Goals"){
                 res = await fetch(`/team_goals/${team}`);
                 console.log('Fetching Goals')
@@ -60,7 +60,7 @@ export default class TeamsDashboardContainer extends React.Component {
     }
 
     setEventTypes = async (selectedEventType) => {
-        this.setState({
+        this.setState({ 
             eventType: selectedEventType
         });
     }
@@ -83,8 +83,11 @@ export default class TeamsDashboardContainer extends React.Component {
         this.setState({
             filter: selectedFilter
         });
-        console.log(this.state.filter)
-        // this.setTeams(this.state.teams)
+        this.setState({filter: selectedFilter}, () => { 
+            console.log(this.state.filter)
+            this.setTeam(this.state.team)
+        });
+        
     }
 
 
@@ -110,7 +113,7 @@ export default class TeamsDashboardContainer extends React.Component {
         await this.setStateAsync({ 
             teams: data,
             teams_id: teams
-         });
+        });
     }
 
     render() {
@@ -126,6 +129,7 @@ export default class TeamsDashboardContainer extends React.Component {
                     teams={teams}
                     setTeam={this.setTeam}
                     events={this.state.events}
+                    setEventTypes={this.setEventTypes}
                     setEvents={this.setEvents}
                     setFilter={this.setFilter}
                 />
