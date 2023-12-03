@@ -223,6 +223,27 @@ class Data:
             except:
                 continue
         return goal_event_data
+    
+    def get_goals_by_team(self, team, for_team=None):
+        team = int(team)
+        match_ids = self.matches['106'].find({"$or": [{"home_team.home_team_id": team},{"away_team.away_team_id": team}]}, {"_id": 0, "match_id":1})
+        
+        player_event_data = {}
+        for match_id_dict in match_ids:
+            match_id = str(match_id_dict['match_id'])
+            
+            if for_team is None:
+                events = self.events[match_id].find({f"type.name": "Shot", "shot.outcome.name":"Goal"}, {"_id": 0})
+            elif for_team:
+                events = self.events[match_id].find({f"type.name": "Shot", "shot.outcome.name":"Goal", "team.id": team}, {"_id": 0})
+            elif for_team: 
+                events = self.events[match_id].find({f"type.name": "Shot", "shot.outcome.name":"Goal", "team.id": {"$ne": team}}, {"_id": 0})
+                            
+            for event in events:
+                player_event_data[event['id']] = {}
+                player_event_data[event['id']]['event_data'] = event
+                
+        return player_event_data
 
         
     def ball_receipts_in_space(self, match_id):

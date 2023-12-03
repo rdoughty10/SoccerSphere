@@ -53,12 +53,13 @@ export default class TeamsHeatmap extends React.Component {
         console.log('Getting positional data')
         // need to loop over the data
         console.log(data)
-
-        let info = [];
+        let locations_data = []
+        
         if (data.length > 1) {
-            
+
             for (let i = 0; i < data.length; i++){
                 let event_info = data[i]['event_data'];
+                let info = [];
 
                 if (event_info.type.name == "Pass" ) {
                     const start = {
@@ -69,12 +70,6 @@ export default class TeamsHeatmap extends React.Component {
                         x: event_info.pass.end_location[0],
                         y: event_info.pass.end_location[1]
                     }
-                    // if (event_info.team.name === this.state.awayTeam){
-                    //     start['x'] = 120 - start['x']
-                    //     start['y'] = 80 - start['y']
-                    //     finish['x'] = 120 - finish['x']
-                    //     finish['y'] = 80 - finish['y']
-                    // }
                     info.push([start, finish])
 
                 } else if (event_info.type.name == "Shot") {
@@ -86,21 +81,13 @@ export default class TeamsHeatmap extends React.Component {
                         x: event_info.shot.end_location[0],
                         y: event_info.shot.end_location[1]
                     }
-                    // if (event_info.team.name === this.state.awayTeam){
-                    //     start['x'] = 120 - start['x']
-                    //     start['y'] = 80 - start['y']
-                    //     finish['x'] = 120 - finish['x']
-                    //     finish['y'] = 80 - finish['y']
-                    // }
                     info.push([start, finish])
                 }
+                locations_data.push([event_info, info])
             }
         }
-        console.log(info)
-        info.map((event_location) => {
-            console.log(event_location)
-        })
-        return info;
+        console.log(locations_data)
+        return locations_data;
     }
 
     renderScatterChart = (data, scale) => (
@@ -140,21 +127,11 @@ export default class TeamsHeatmap extends React.Component {
                 <YAxis type="number" dataKey="y" hide domain={[0,80]}/>
                 <Tooltip cursor={{ strokeDasharray: '3 3' }}/>
                 <Legend />
-                {/* <ReferenceLine stroke="black" segment={data[0]}/>
-                <ReferenceLine stroke="black" segment={data[1]}/>
-
-                {data.map((event_location)=>{
-                   <ReferenceLine stroke="black" segment={event_location}/>
-                })} */}
-
-                {data.map((event_location, index) => (
-                    <ReferenceLine key={index} stroke="gray" segment={event_location} />
-                ))}
                 
 
-                {/* {data.length > 2 ? <ReferenceLine stroke="black" segment={data[2]}/> : <></>}
-                <Scatter name={data[0][0]} data={data[0][1]} fill="#FF0000"/>
-                <Scatter name={data[1][0]} data={data[1][1]} fill="#0000FF"/> */}
+                {data.map((event, index) => (
+                    <ReferenceLine key={index} stroke="gray" segment={event[1][0]} />
+                ))}
                 
             </ScatterChart>
         </div>
