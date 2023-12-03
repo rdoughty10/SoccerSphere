@@ -134,9 +134,16 @@ class Data:
         return passes_data
     
     
-    def get_complete_passes(self, match_id):
+    def get_complete_passes(self, match_id, team_id=None, for_team= True):
         '''gets complete passes from a particular game'''
-        return self.events[match_id].find({"pass": { '$exists': True }, "pass.outcome": {'$exists': False}}, {"_id": 0})
+        if team_id is None:
+            return self.events[match_id].find({"pass": { '$exists': True }, "pass.outcome": {'$exists': False}}, {"_id": 0})
+        else:
+            if for_team:
+                return self.events[match_id].find({"pass": { '$exists': True }, "pass.outcome": {'$exists': False}, "team.id": team_id}, {"_id": 0})        
+            else:
+                return self.events[match_id].find({"pass": { '$exists': True }, "pass.outcome": {'$exists': False}, "team.id": {"$ne": team_id}}, {"_id": 0})    
+
     
     def get_complete_pass_locations(self, match_id):
         '''Gets complete passes and returns the locations along with it'''
@@ -154,10 +161,36 @@ class Data:
                 continue
         return passes_data
     
-    def get_line_breaking_passes(self, match_id):
+    def get_line_breaking_passes_by_team(self, team, for_team=None):
+        '''calculates line breaking passes for a game and returns those events'''
+        team = int(team)
+        match_ids = self.matches['106'].find({"$or": [{"home_team.home_team_id": team},{"away_team.away_team_id": team}]}, {"_id": 0, "match_id":1})
+        
+        player_event_data = {}
+        for match_id_dict in match_ids:
+            complete_passes = self.get_complete_passes(match_id, team_id=team, for_team=for_team)
+            threesixty_data = self.get_threesixty(match_id) 
+            
+            match_id = str(match_id_dict['match_id'])
+            
+            if for_team is None:
+                events = self.events[match_id].find({f"type.name": "Pass", "shot.outcome.name":"Goal"}, {"_id": 0})
+            elif for_team:
+                events = self.events[match_id].find({f"type.name": "Pass", "shot.outcome.name":"Goal", "team.id": team}, {"_id": 0})
+            elif for_team: 
+                events = self.events[match_id].find({f"type.name": "Pass", "shot.outcome.name":"Goal", "team.id": {"$ne": team}}, {"_id": 0})
+                            
+            for event in events:
+                player_event_data[event['id']] = {}
+                player_event_data[event['id']]['event_data'] = event
+                
+        return player_event_data
+        
+    
+    def get_line_breaking_passes(self, match_id, team_id=None):
         '''calculates line breaking passes for a game and returns those events'''
         
-        complete_passes = self.get_complete_passes(match_id)
+        complete_passes = self.get_complete_passes(match_id, team_id=team_id)
         threesixty_data = self.get_threesixty(match_id) 
         passes_data = {}
         for pass_event in complete_passes:

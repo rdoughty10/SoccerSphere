@@ -27,9 +27,13 @@ def get_match(match_id):
     match_data = data.get_match(match_id)
     return jsonify(match_data)
 
-@app.route("/event_players_team/<team_id>/<filter>")
-def get_event_player_team_filtered(team_id, filter):
-    event_player_data = data.get_event_player_team_data(team_id, filter)
+@app.route("/event_players_team/<team_id>/<filter>/<for_team>")
+def get_event_player_team_filtered(team_id, filter, for_team):
+    is_own_team = True
+    if for_team == 'Against':
+        is_own_team = False
+        
+    event_player_data = data.get_event_player_team_data(team_id, filter, for_team=is_own_team)
     return jsonify(event_player_data)
 
 
@@ -56,6 +60,11 @@ def get_complete_passes(match_id):
 @app.route('/linebreaking/<match_id>')
 def get_linebreaking(match_id):
     lb_passes = data.get_line_breaking_passes(match_id)
+    return jsonify(lb_passes)
+
+@app.route('/linebreaking/<team_id>')
+def get_linebreaking_by_team(team_id):
+    lb_passes = data.get_line_breaking_passes_by_team(team_id)
     return jsonify(lb_passes)
 
 @app.route('/ballreceipts/<match_id>')
