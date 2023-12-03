@@ -1,0 +1,71 @@
+.about-container {
+    height: 320vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .about-segment {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 80vh;
+    padding: 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  }
+  
+  .left-content,
+  .right-content {
+    flex: 1;
+  }
+  
+  .statsBomb-image {
+    flex: 0 0 30%; /* 30% width */  
+    width: 30%;
+    height: 30%;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .dataArch-image {
+    flex: 0 0 66%; 
+    width: 66%;
+    height: 66%;
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .statsBomb-image {
+    background-image: url('Images/statsBomb.jpg');
+  }
+  
+  .dataArch-image {
+    background-image: url('Images/dataArchitecture.jpg');
+  }
+
+  .logo-image {
+    flex: 0 0 15%;
+    width: 15%;
+    height: 20%;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .logo-image {
+    background-image: url('Images/whiteLogo.jpg');
+  }
+  
+  .left-content h2,
+  .right-content h2 {
+    font-size: 2em; 
+    font-weight: bold; 
+  }
+  
+  .left-content p,
+  .right-content p {
+    font-size: 1.2em;
+  }
+  .right-content img {
+    max-width: 100%;
+    max-height: 100%;
+  }

@@ -99,3 +99,24 @@
   .App-link {
     color: #61dafb;
   }
+
+  .Arch-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: black;
+    padding: 0px;
+    margin-top: 50px;
+  }
+
+  .ArchImage{
+    width: 50%;
+    height: 225px;
+    background-image: url('Images/dataArchitecture.jpg');
+    background-size: 100% 37vh;
+    background-position: center;
+    padding: 0px;
+  }
