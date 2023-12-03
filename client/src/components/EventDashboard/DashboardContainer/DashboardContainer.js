@@ -2,11 +2,18 @@ import React from "react";
 import FilterForm from "../FilterForm";
 import "./DashboardContainer.scss";
 import Heatmap from "../Heatmap"
+import { Cookies } from 'react-cookie';
+import Joyride from "react-joyride";
+import { ToastContainer, Zoom, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 export default class DashboardContainer extends React.Component {
 
     constructor(props) {
         super(props);
+
+        this.cookies = new Cookies();
 
         this.state = {
             events: [],
@@ -16,7 +23,8 @@ export default class DashboardContainer extends React.Component {
             matchData: [],
             homeTeam: null,
             awayTeam: null,
-            matches: null
+            matches: null,
+            showJoyride: this.cookies.get('visitedBefore') !== true,
         };
         this.setMatch = this.setMatch.bind(this);
         this.setEvents= this.setEvents.bind(this);
@@ -110,6 +118,37 @@ export default class DashboardContainer extends React.Component {
         });
         console.log(this.state.filter)
         this.setMatch(this.state.match)
+
+        switch (selectedFilter){
+            case "Goals":
+                toast.info('Selected filter: Goals');
+                break;
+            case "Shots":
+                toast.info('Selected filter: Shots');
+                break;
+            case "Passes":
+                toast.info('Selected filter: Passes');
+                break;
+            case "Pressures":
+                toast.info('Selected filter: Pressures');
+                break;
+            case "Duels":
+                toast.info('Selected filter: Duels');
+                break;
+            case "Carries":
+                toast.info('Selected filter: Carries');
+                break;
+            case "Ball Recoveries":
+                toast.info('Selected filter: Ball Recoveries');
+                break;
+            case "Line-Breaking Passes":
+                toast.info('Selected filter: Line-Breaking Passes');
+                break;
+            case "Receipts in Space":
+                toast.info('Receipts in Space is a series of metrics that record the number of ball receipts with a defender within a range of 0-2, 2-5, 5-10 or 10 or more yards of the ball receiver.');
+                break;
+            default:
+        }
     }
 
 
@@ -136,38 +175,98 @@ export default class DashboardContainer extends React.Component {
         if (matches == null) {
             return
         }
+
+        const steps = [
+            {
+                target: "#MatchSelector",
+                content: "Please Select a match",
+                disableBeacon: true,
+                spotlightClicks: true
+            },
+            {
+                target: "#EventFilter",
+                content: "Please Select an Event Type",
+                spotlightClicks: true
+            },
+            {
+                target: "#EventsSelector",
+                content: "Please Select an Event",
+                spotlightClicks: true
+            }
+        ];
+
         return (
-            <div className="dashboardContainer">
-                <h4 className="title">{matches && matches[0] && matches[0].competition ? matches[0].competition.competition_name : ""}</h4>
-                <h6 className="subTitle">Season: {matches && matches[0] && matches[0].season ? matches[0].season.season_name : ""}</h6>
-                <FilterForm
-                    matches={matches}
-                    setMatch={this.setMatch}
-                    events={this.state.events}
-                    setEvents={this.setEvents}
-                    setFilter={this.setFilter}
+            <>
+                <ToastContainer
+                position="bottom-right"
+                autoClose={false}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+                limit={5}
+                transition={Zoom}
+                toastStyle={{backgroundColor: "green"}}
                 />
-                { this.state.events ?
-                    <div>
-                        <div className="chartGrid">
-                            <div className="bx--grid">
-                                <div className="bx--row">
-                                {this.state.selectedEvent ?
-                                    this.state.selectedEvent.slice(0, 1).map(events => (
-                                        <div className="bx--col">
-                                            <Heatmap 
-                                                data={this.state.selectedEvent}
-                                                homeTeam={this.state.homeTeam}
-                                                awayTeam={this.state.awayTeam}
-                                            />
-                                        </div>)) : <div /> 
-                                }
+                {this.state.showJoyride && (
+                    <Joyride
+                        steps = {steps}
+                        continuous = {true}
+                        showProgress = {true}
+                        showSkipButton = {true}
+                        disableOverlayClose = {true}
+                        styles={{
+                            options: {
+                                arrowColor: '#e3ffeb',
+                                backgroundColor: '#e3ffeb',
+                                overlayColor: 'rgba(0, 0, 0, 0.5)',
+                                primaryColor: '#000',
+                                textColor: '#004a14',
+                                width: undefined,
+                                zIndex: 1000,
+                            }
+                        }}
+                        callback={() => {
+                            this.cookies.set('visitedBefore', true);
+                        }}
+                    />
+                )}
+                <div className="dashboardContainer">
+                    <h4 className="title">{matches && matches[0] && matches[0].competition ? matches[0].competition.competition_name : ""}</h4>
+                    <h6 className="subTitle">Season: {matches && matches[0] && matches[0].season ? matches[0].season.season_name : ""}</h6>
+                    <FilterForm
+                        matches={matches}
+                        setMatch={this.setMatch}
+                        events={this.state.events}
+                        setEvents={this.setEvents}
+                        setFilter={this.setFilter}
+                    />
+                    { this.state.events ?
+                        <div>
+                            <div className="chartGrid">
+                                <div className="bx--grid">
+                                    <div className="bx--row">
+                                    {this.state.selectedEvent ?
+                                        this.state.selectedEvent.slice(0, 1).map(events => (
+                                            <div className="bx--col">
+                                                <Heatmap 
+                                                    data={this.state.selectedEvent}
+                                                    homeTeam={this.state.homeTeam}
+                                                    awayTeam={this.state.awayTeam}
+                                                />
+                                            </div>)) : <div /> 
+                                    }
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div> : <div/>
-                }   
-            </div>
+                        </div> : <div/>
+                    }   
+                </div>
+            </>    
         );
     }
 }
