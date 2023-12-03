@@ -46,6 +46,7 @@ export default class TeamsDashboardContainer extends React.Component {
             for (var i in events) {
                 data.push(events[i])
             }
+            
         }        
 
         console.log(data)
@@ -126,21 +127,17 @@ export default class TeamsDashboardContainer extends React.Component {
                     setEvents={this.setEvents}
                     setFilter={this.setFilter}
                 />
-                { this.state.events ?
+                { this.state.events.length > 0 ?
                     <div>
                         <div className="chartGrid">
                             <div className="bx--grid">
                                 <div className="bx--row">
-                                {this.state.selectedEvent ?
-                                    this.state.selectedEvent.slice(0, 1).map(events => (
-                                        <div className="bx--col">
-                                            <TeamsHeatmap 
-                                                data={this.state.selectedEvent}
-                                                homeTeam={this.state.homeTeam}
-                                                awayTeam={this.state.awayTeam}
-                                            />
-                                        </div>)) : <div /> 
-                                }
+                                    <div className="bx--col">
+                                        <TeamsHeatmap 
+                                            data={this.state.events}
+                                            team={this.state.team}
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </div>
