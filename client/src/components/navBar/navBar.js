@@ -23,8 +23,11 @@ const Navigbar = () => {
                 <NavLink to="./pages/about" activeStyle>
                     About
                 </NavLink>
-                <NavLink to="./components/DashboardContainer/DashboardContainer" activeStyle>
+                <NavLink to="./components/EventDashboard/DashboardContainer/DashboardContainer" activeStyle>
                     Dashboard
+                </NavLink>
+                <NavLink to="./components/TeamsDashboard/TeamsDashboardContainer/TeamsDashboardContainer" activeStyle>
+                    Teams
                 </NavLink>
             </NavMenu>
         </Nav>

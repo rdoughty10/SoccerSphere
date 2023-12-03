@@ -44,6 +44,17 @@ class Data:
     def get_lineups(self, match_id):
         '''return lineups (lineups are 2 documents per collection)'''
         return self.lineups[match_id].find({},{"_id": 0})
+    
+    def get_teams(self):
+        '''get all teams'''
+        matches = self.get_matches()
+        teams = {}
+        for match in matches:
+            home_id, home_name = match['home_team']['home_team_id'], match['home_team']['home_team_name']
+            away_id, away_name = match['away_team']['away_team_id'], match['away_team']['away_team_name']
+            teams[home_id] = home_name
+            teams[away_id] = away_name
+        return teams
 
     def get_events(self, match_id, remove={}, filter=None):
         '''return the events for a particular game (returns list of documents)'''
@@ -73,6 +84,29 @@ class Data:
             except:
                 continue
         
+        return player_event_data
+    
+    def get_event_player_team_data(self, team, filter_word, for_team=None):
+        ''' returns all events of certain type for a given team'''
+        print("RUNNING")
+        team = int(team)
+        match_ids = self.matches['106'].find({"$or": [{"home_team.home_team_id": team},{"away_team.away_team_id": team}]}, {"_id": 0, "match_id":1})
+        player_event_data = {}
+        for match_id_dict in match_ids:
+            match_id = str(match_id_dict['match_id'])
+            
+            if for_team is None:
+                events = self.events[match_id].find({f"type.name": filter_word}, {"_id": 0})
+            elif for_team:
+                events = self.events[match_id].find({f"type.name": filter_word, "team.id": team}, {"_id": 0})
+            elif for_team: 
+                events = self.events[match_id].find({f"type.name": filter_word, "team.id": {"$ne": team}}, {"_id": 0})
+                            
+            for event in events:
+                player_event_data[event['id']] = {}
+                player_event_data[event['id']]['event_data'] = event
+           
+                
         return player_event_data
 
     def get_threesixty(self, match_id):
