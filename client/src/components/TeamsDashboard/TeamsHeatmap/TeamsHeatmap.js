@@ -37,8 +37,10 @@ export default class TeamsHeatmap extends React.Component {
         window.addEventListener("resize", this.resize.bind(this));
         const locations = this.getPositionalData(this.props.data);
         this.setState({
-            locations,
+            locations: locations,
         });
+
+
     }
 
     resize() {
@@ -140,9 +142,12 @@ export default class TeamsHeatmap extends React.Component {
                 <Tooltip cursor={{ strokeDasharray: '3 3' }}/>
                 <Legend />
                 
-
+                
                 {data.map((event, index) => (
-                    <ReferenceLine key={index} stroke="gray" segment={event[1][0]} />
+                    <ReferenceLine 
+                        key={index} 
+                        stroke={event[0].type.name === "Pass" ? (event[0].pass.outcome ? "green": "gray") : (event[0].shot.outcome.name === "Goal" ? "green" : "gray")} 
+                        segment={event[1][0]} />
                 ))}
                 
             </ScatterChart>
@@ -152,7 +157,7 @@ export default class TeamsHeatmap extends React.Component {
     render() {
         const { locations, scale } = this.state;
         console.log("rerendered");
-        console.log(this.props.data)
+
         return (
             <div className="heatmap">
                 { this.renderScatterChart(this.getPositionalData(this.props.data), scale) }
