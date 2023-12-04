@@ -134,7 +134,7 @@ class Data:
         return passes_data
     
     
-    def get_complete_passes(self, match_id, team_id=None, for_team= True):
+    def get_complete_passes(self, match_id, team_id=None, for_team=True):
         '''gets complete passes from a particular game'''
         if team_id is None:
             return self.events[match_id].find({"pass": { '$exists': True }, "pass.outcome": {'$exists': False}}, {"_id": 0})
@@ -165,34 +165,64 @@ class Data:
         '''calculates line breaking passes for a game and returns those events'''
         team = int(team)
         match_ids = self.matches['106'].find({"$or": [{"home_team.home_team_id": team},{"away_team.away_team_id": team}]}, {"_id": 0, "match_id":1})
-        
+        print(match_ids)
         player_event_data = {}
         for match_id_dict in match_ids:
+            match_id = str(match_id_dict['match_id'])
             complete_passes = self.get_complete_passes(match_id, team_id=team, for_team=for_team)
             threesixty_data = self.get_threesixty(match_id) 
             
+            passes_data = {}
+            for pass_event in complete_passes:
+                passes_data[pass_event['id']] = {}
+                passes_data[pass_event['id']]['event_data'] = pass_event
+            for threesixty in threesixty_data:
+                event_id = threesixty['event_uuid']
+                try: ## try except just in case event_id not in event (issue when limiting the events to first 100)
+                    passes_data[event_id]['location_data'] = threesixty['freeze_frame']
+                except:
+                    continue
             
-            
-            match_id = str(match_id_dict['match_id'])
-            
-            if for_team is None:
-                events = self.events[match_id].find({f"type.name": "Pass", "shot.outcome.name":"Goal"}, {"_id": 0})
-            elif for_team:
-                events = self.events[match_id].find({f"type.name": "Pass", "shot.outcome.name":"Goal", "team.id": team}, {"_id": 0})
-            elif for_team: 
-                events = self.events[match_id].find({f"type.name": "Pass", "shot.outcome.name":"Goal", "team.id": {"$ne": team}}, {"_id": 0})
+            locations = {}
+            linebreaking_ids = []
+            for id, event in passes_data.items():
                             
-            for event in events:
-                player_event_data[event['id']] = {}
-                player_event_data[event['id']]['event_data'] = event
-                
+                initial_ball_location = event["event_data"]["location"]
+                end_location = event["event_data"]["pass"]['end_location']
+                if 'location_data' in event:
+                    opponent_locations = []
+                    for player in event["location_data"]:
+                        if player["teammate"] is False:
+                            initx, inity = initial_ball_location
+                            finx, finy = end_location
+                            playerx, playery = player["location"]
+                            ylim_min, y_lim_max = min([inity, finy]) - 40, min([inity, finy]) + 40 ## range of y players that could be split by the pass of the ball (have to be within 40 yards of ball)
+                            
+                            ## only passes of greater than 10 yards forward
+                            if initx + 10 < finx:
+                                ## filter locations
+                                if playerx > initx and playerx < finx and playery > ylim_min and playery < y_lim_max:
+                                    opponent_locations.append([playerx, playery])
+                                    
+                    if len(opponent_locations) >= 2:
+                        locations[id] = {}
+                        locations[id]['initial'] = initial_ball_location
+                        locations[id]['end'] = end_location
+                        locations[id]['opponents'] = opponent_locations
+                        linebreaking_ids.append(id)
+                    
+            ## filter the passes by event id
+            for id, event in passes_data.items():
+                if id in linebreaking_ids:
+                    player_event_data[id] = event
+
         return player_event_data
         
     
-    def get_line_breaking_passes(self, match_id, team_id=None):
+    def get_line_breaking_passes(self, match_id):
         '''calculates line breaking passes for a game and returns those events'''
         
-        complete_passes = self.get_complete_passes(match_id, team_id=team_id)
+        complete_passes = self.get_complete_passes(match_id)
         threesixty_data = self.get_threesixty(match_id) 
         passes_data = {}
         for pass_event in complete_passes:

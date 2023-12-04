@@ -64,9 +64,12 @@ def get_linebreaking(match_id):
     lb_passes = data.get_line_breaking_passes(match_id)
     return jsonify(lb_passes)
 
-@app.route('/linebreaking/<team_id>')
-def get_linebreaking_by_team(team_id):
-    lb_passes = data.get_line_breaking_passes_by_team(team_id)
+@app.route('/linebreaking_by_team/<team_id>/<for_team>')
+def get_linebreaking_by_team(team_id, for_team):
+    if for_team == "Against":
+        lb_passes = data.get_line_breaking_passes_by_team(team_id, for_team=False)
+    else:
+        lb_passes = data.get_line_breaking_passes_by_team(team_id, for_team=True)
     return jsonify(lb_passes)
 
 @app.route('/ballreceipts/<match_id>')
