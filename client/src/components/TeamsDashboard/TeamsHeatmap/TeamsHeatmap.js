@@ -96,6 +96,10 @@ export default class TeamsHeatmap extends React.Component {
                         finish['y'] = 80 - finish['y']
                     }
                     info.push([start, finish])
+                } else if (event_info.type.name == "Ball Receipt"){
+                    if (event_info.team.id != this.state.team){
+                        info.push([event_info.location[0], event_info.location[1]])
+                    }
                 }
                 locations_data.push([event_info, info])
             }
@@ -142,7 +146,7 @@ export default class TeamsHeatmap extends React.Component {
                 <Tooltip cursor={{ strokeDasharray: '3 3' }}/>
                 <Legend />
                 
-                
+                <Scatter name={"Ball Receipts in Space"} data={data[0][1]} fill="#FF0000"/>
                 {data.map((event, index) => (
                     <ReferenceLine 
                         key={index} 

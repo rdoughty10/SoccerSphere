@@ -269,9 +269,17 @@ class Data:
         
         return line_breaking_passes
     
-    def get_ball_receipts(self, match_id):
+    def get_ball_receipts(self, match_id, team_id=None, for_team=True):
         '''Gets all ball receipts'''
-        return self.events[match_id].find({"type.name": "Ball Receipt*"}, {"_id": 0})
+        
+        '''gets complete passes from a particular game'''
+        if team_id is None:
+            return self.events[match_id].find({"type.name": "Ball Receipt*"}, {"_id": 0})
+        else:
+            if for_team:
+                return self.events[match_id].find({"type.name": "Ball Receipt*", "team.id": team_id}, {"_id": 0})       
+            else:
+                return self.events[match_id].find({"type.name": "Ball Receipt*", "team.id": {"$ne": team_id}}, {"_id": 0})
     
     def get_goals(self, match_id):
         '''returns all goals for a game'''
@@ -310,7 +318,53 @@ class Data:
                 
         return player_event_data
 
+
+    def ball_receipts_in_space_by_team(self, team, for_team=None):
+        ''' returns all ball receipts in space for team'''
+        team = int(team)
+        match_ids = self.matches['106'].find({"$or": [{"home_team.home_team_id": team},{"away_team.away_team_id": team}]}, {"_id": 0, "match_id":1})
         
+        player_event_data = {}
+        for match_id_dict in match_ids:
+            match_id = str(match_id_dict['match_id'])
+        
+            ball_receipts = self.get_ball_receipts(match_id, team_id=team, for_team=for_team)
+            threesixty_data = self.get_threesixty(match_id) 
+            ball_receipts_data = {}
+            for pass_event in ball_receipts:
+                ball_receipts_data[pass_event['id']] = {}
+                ball_receipts_data[pass_event['id']]['event_data'] = pass_event
+            for threesixty in threesixty_data:
+                event_id = threesixty['event_uuid']
+                try: ## try except just in case event_id not in event (issue when limiting the events to first 100)
+                    ball_receipts_data[event_id]['location_data'] = threesixty['freeze_frame']
+                except:
+                    continue
+            
+        
+            ball_receipts_ids = []
+            for id, event in ball_receipts_data.items():
+                            
+                ballx, bally = event["event_data"]["location"]
+                
+                if 'location_data' in event:
+                    opponent_near = False
+                    for player in event["location_data"]:
+                        if player["teammate"] is False:
+                            playerx, playery = player["location"]
+                            distance = math.sqrt(math.pow(playerx - ballx, 2) + math.pow(playery - bally, 2))
+                            if distance < 5:
+                                opponent_near = True
+                    if not opponent_near:
+                        ball_receipts_ids.append(id)
+              
+        ## filter the passes by event id
+            for id, event in ball_receipts_data.items():
+                if id in ball_receipts_ids:
+                    player_event_data[id] = event
+                
+        return player_event_data
+  
     def ball_receipts_in_space(self, match_id):
         ''' returns all ball receipts in space'''
         ball_receipts = self.get_ball_receipts(match_id)
@@ -342,11 +396,10 @@ class Data:
                             opponent_near = True
                 if not opponent_near:
                     ball_receipts_ids.append(id)
-              
+                
         ## filter the passes by event id
         line_breaking_passes = {id: event for id, event in ball_receipts_data.items() if id in ball_receipts_ids}
         
         print(len(line_breaking_passes))
         
         return line_breaking_passes
-    
