@@ -146,7 +146,7 @@ export default class TeamsHeatmap extends React.Component {
                 {data.map((event, index) => (
                     <ReferenceLine 
                         key={index} 
-                        stroke={event[0].type.name === "Pass" ? (event[0].pass.outcome ? "green": "gray") : (event[0].shot.outcome.name === "Goal" ? "green" : "gray")} 
+                        stroke={event[0].type.name === "Pass" ? (event[0].pass.outcome ? "#FFA2A2": "green") : (event[0].shot.outcome.name === "Goal" ? "green" : "#FFA2A2")} 
                         segment={event[1][0]} />
                 ))}
                 
