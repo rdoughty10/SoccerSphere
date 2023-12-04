@@ -79,9 +79,12 @@ def get_goals(match_id):
     goals = data.get_goals(match_id)
     return jsonify(goals)
 
-@app.route('/team_goals/<team_id>')
-def get_team_goals(team_id):
-    goals = data.get_goals_by_team(team_id)
+@app.route('/team_goals/<team_id>/<for_team>')
+def get_team_goals(team_id, for_team):
+    if for_team == 'Against': 
+        goals = data.get_goals_by_team(team_id, for_team=False)
+    else:
+        goals = data.get_goals_by_team(team_id, for_team=True)
     return jsonify(goals)
 
 @app.route('/teams/')

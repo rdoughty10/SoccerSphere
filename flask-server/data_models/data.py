@@ -171,6 +171,8 @@ class Data:
             complete_passes = self.get_complete_passes(match_id, team_id=team, for_team=for_team)
             threesixty_data = self.get_threesixty(match_id) 
             
+            
+            
             match_id = str(match_id_dict['match_id'])
             
             if for_team is None:
@@ -269,7 +271,7 @@ class Data:
                 events = self.events[match_id].find({f"type.name": "Shot", "shot.outcome.name":"Goal"}, {"_id": 0})
             elif for_team:
                 events = self.events[match_id].find({f"type.name": "Shot", "shot.outcome.name":"Goal", "team.id": team}, {"_id": 0})
-            elif for_team: 
+            elif not for_team: 
                 events = self.events[match_id].find({f"type.name": "Shot", "shot.outcome.name":"Goal", "team.id": {"$ne": team}}, {"_id": 0})
                             
             for event in events:
