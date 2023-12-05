@@ -62,6 +62,7 @@ export default class TeamsHeatmap extends React.Component {
                 let event_info = data[i]['event_data'];
                 let info = [];
 
+
                 if (event_info.type.name == "Pass" ) {
                     const start = {
                         x: event_info.location[0],
@@ -95,15 +96,24 @@ export default class TeamsHeatmap extends React.Component {
                         finish['y'] = 80 - finish['y']
                     }
                     info.push([start, finish])
-                } else if (event_info.type.name == "Ball Receipt"){
-                    if (event_info.team.id != this.props.team){
-                        info.push([event_info.location[0], event_info.location[1]])
+                } else if (event_info.type.name == "Ball Receipt*"){
+                    if (event_info.team.id === this.props.team){
+                        const point_loc = {
+                            x: 120-event_info.location[0],
+                            y: 80-event_info.location[1]
+                        }
+                        info.push([point_loc])
+                    } else {
+                        const point_loc = {
+                            x: event_info.location[0],
+                            y: event_info.location[1]
+                        }
+                        info.push([point_loc])
                     }
                 }
                 locations_data.push([event_info, info])
             }
         }
-        console.log(locations_data)
         return locations_data;
     }
 
@@ -116,9 +126,7 @@ export default class TeamsHeatmap extends React.Component {
                     top: 20, right: 20, bottom: 20, left: 20,
                 }}
             >
-                {/* 
-                    The following Reference components are used to draw the football pitch
-                */}
+
                 <ReferenceDot x={12} y={40} r={10*scale} stroke="black" fillOpacity={0}/> {/* Left Penalty Arc */}
                 <ReferenceDot x={60} y={40} r={10*scale} stroke="black" fillOpacity={0}/> {/* Center Circle */}
                 <ReferenceDot x={108} y={40} r={10*scale} stroke="black" fillOpacity={0}/> {/* Right Penalty Arc */}
@@ -129,12 +137,6 @@ export default class TeamsHeatmap extends React.Component {
                 <ReferenceDot x={60} y={40} r={0.5*scale} fill="black" stroke="black"/> {/* Centre Spot */}
                 <ReferenceDot x={12} y={40} r={0.5*scale} fill="black" stroke="black"/> {/* Left Penalty Spot */}
                 <ReferenceDot x={108} y={40} r={0.5*scale} fill="black" stroke="black"/> {/* Right Penalty Spot */}
-                {
-                    /* 
-                        Map the various heat sectors as ReferenceAreas onto the pitch,
-                        using `sector.count` to determine opacity
-                    */
-                }
                 <CartesianGrid />
                 <ReferenceLine x={60} stroke="black"/> {/* Center Half */}
                 <ReferenceArea x1={0} x2={0.1} y1={36} y2={80-36} fill="black" fillOpacity={1} stroke="black"/> {/* Left Goal line */}
@@ -142,18 +144,23 @@ export default class TeamsHeatmap extends React.Component {
                 <ReferenceArea x1={0} x2={120} y1={0} y2={80} fillOpacity={0} stroke="black" /> {/* Pitch Outline */}
                 <XAxis type="number" dataKey="x" hide domain={[0,120]}/>
                 <YAxis type="number" dataKey="y" hide domain={[0,80]}/>
-                <Tooltip cursor={{ strokeDasharray: '3 3' }}/>
-                <Legend />
-                
-                <Scatter name={"Ball Receipts in Space"} data={data[0][1]} fill="#FF0000"/>
+                <Tooltip cursor={{ strokeDasharray: '3 3' }}/>        
+
+
                 {data.map((event, index) => (
-                    <ReferenceLine 
-                        key={index} 
-                        stroke={event[0].type.name === "Pass" ? (event[0].pass.outcome ? "#FFA2A2": "green") : (event[0].shot.outcome.name === "Goal" ? "green" : "#FFA2A2")} 
-                        segment={event[1][0]} />
+                    <>
+                        {event[0].type.name != "Ball Receipt*" ? (
+                            <ReferenceLine  
+                            stroke={event[0].type.name === "Pass" ? (event[0].pass.outcome ? "#FFA2A2": "green") : (event[0].shot.outcome.name === "Goal" ? "green" : "#FFA2A2")} 
+                            segment={event[1][0]} />
+                        ) : (
+                            <Scatter index={index} data={event[1][0]} fill="gray"/>
+                        )}
+                    </>
                 ))}
                 
             </ScatterChart>
+            
         </div>
     );
 

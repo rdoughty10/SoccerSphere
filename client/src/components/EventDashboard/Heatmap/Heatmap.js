@@ -121,6 +121,7 @@ export default class Heatmap extends React.Component {
                 }
                 info.push([start, finish])
             }
+            console.log(info)
             return info
         }
         return data;
@@ -135,9 +136,7 @@ export default class Heatmap extends React.Component {
                     top: 20, right: 20, bottom: 20, left: 20,
                 }}
             >
-                {/* 
-                    The following Reference components are used to draw the football pitch
-                */}
+
                 <ReferenceDot x={12} y={40} r={10*scale} stroke="black" fillOpacity={0}/> {/* Left Penalty Arc */}
                 <ReferenceDot x={60} y={40} r={10*scale} stroke="black" fillOpacity={0}/> {/* Center Circle */}
                 <ReferenceDot x={108} y={40} r={10*scale} stroke="black" fillOpacity={0}/> {/* Right Penalty Arc */}
@@ -148,12 +147,6 @@ export default class Heatmap extends React.Component {
                 <ReferenceDot x={60} y={40} r={0.5*scale} fill="black" stroke="black"/> {/* Centre Spot */}
                 <ReferenceDot x={12} y={40} r={0.5*scale} fill="black" stroke="black"/> {/* Left Penalty Spot */}
                 <ReferenceDot x={108} y={40} r={0.5*scale} fill="black" stroke="black"/> {/* Right Penalty Spot */}
-                {
-                    /* 
-                        Map the various heat sectors as ReferenceAreas onto the pitch,
-                        using `sector.count` to determine opacity
-                    */
-                }
                 <CartesianGrid />
                 <ReferenceLine x={60} stroke="black"/> {/* Center Half */}
                 <ReferenceArea x1={0} x2={0.1} y1={36} y2={80-36} fill="black" fillOpacity={1} stroke="black"/> {/* Left Goal line */}
