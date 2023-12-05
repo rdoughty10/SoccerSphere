@@ -80,7 +80,7 @@ body {
     align-items: flex-start;
     padding: 0px;
     position: relative;
-    top: 50%; 
+    top: 60%; 
     transform: translateY(-50%); 
 } 
 
@@ -92,6 +92,7 @@ body {
     /* height: 45vh; */
     height: 237px;
     margin-right: 0px;
+    width: 75vw;
     text-align: left; 
 }
 
@@ -109,7 +110,7 @@ body {
 .logo-box {
     top: 0;
     right: 0;
-    width: 275px;
+    width: 280px;
     /* height: 45vh; */
     height: 237px;
     background-image: url('Images/logo3.jpg');

@@ -20,7 +20,10 @@ const Home = () => {
             <div className="scroll-box">
                 <div className="our-project">
                     <h2>Our Project</h2>
-                    <p>Here is a brief paragraph about our project...</p>
+                    <p>SoccerSphere uses advanced event data from StatsBomb to provide coaches and scouts 
+                        with opponent analysis. The data is presented with a variety of clear, 
+                        cohesive visual aids. It prioritizes being intuitive and comprehensive 
+                        to maximize accessibility, even for staff with no data analysis experience.</p>
                 </div>
                 <div className="logo-box">
                     {/* <img src='Images/logo.jpg' className="logo" /> */}
