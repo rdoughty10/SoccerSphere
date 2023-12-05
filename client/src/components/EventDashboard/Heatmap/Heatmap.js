@@ -24,22 +24,17 @@ export default class Heatmap extends React.Component {
         console.log(props)
 
         this.state = {
-            locations: [],
             vertical: window.innerWidth <= 500,
             scale: window.innerWidth <= 500 ? 4.5 : 5,
-            homeTeam: props.homeTeam,
-            awayTeam: props.awayTeam,
         };
 
         this.renderScatterChart = this.renderScatterChart.bind(this);
     }
 
+
     componentDidMount() {
         window.addEventListener("resize", this.resize.bind(this));
-        const locations = this.getPositionalData(this.props.data);
-        this.setState({
-            locations,
-        });
+
     }
 
     resize() {
@@ -50,7 +45,7 @@ export default class Heatmap extends React.Component {
     }
 
     getPositionalData = (data) => {
-        
+        console.log("AUHGUHUGHUEHGUEGH")
         if (data.length > 1) {
             let playerLocations = data[1];
             let event_info = data[0];
@@ -74,14 +69,10 @@ export default class Heatmap extends React.Component {
                     y: evt.location[1]
                 }
             });
-            console.log(locations)
-            console.log(locations1)
 
-            console.log(event_info.team.name)
-            console.log(this.state.homeTeam)
             let info;
-            if (event_info.team.name === this.state.homeTeam){
-                info = [[this.state.homeTeam, locations], [this.state.awayTeam, locations1]];
+            if (event_info.team.name === this.props.homeTeam){
+                info = [[this.props.homeTeam, locations], [this.props.awayTeam, locations1]];
             }else {
                 for (let i = 0; i < locations.length; i++) {
                     locations[i]['x'] = 120 - locations[i]['x'];
@@ -94,7 +85,7 @@ export default class Heatmap extends React.Component {
                 console.log('Change Directions')
                 console.log(locations[0]['x'])
                 
-                info = [[this.state.homeTeam, locations1], [this.state.awayTeam, locations]];;
+                info = [[this.props.homeTeam, locations1], [this.props.awayTeam, locations]];;
             }
             if (event_info.type.name == "Pass" ) {
                 const start = {
@@ -105,7 +96,7 @@ export default class Heatmap extends React.Component {
                     x: event_info.pass.end_location[0],
                     y: event_info.pass.end_location[1]
                 }
-                if (event_info.team.name === this.state.awayTeam){
+                if (event_info.team.name === this.props.awayTeam){
                     start['x'] = 120 - start['x']
                     start['y'] = 80 - start['y']
                     finish['x'] = 120 - finish['x']
@@ -122,7 +113,7 @@ export default class Heatmap extends React.Component {
                     x: event_info.shot.end_location[0],
                     y: event_info.shot.end_location[1]
                 }
-                if (event_info.team.name === this.state.awayTeam){
+                if (event_info.team.name === this.props.awayTeam){
                     start['x'] = 120 - start['x']
                     start['y'] = 80 - start['y']
                     finish['x'] = 120 - finish['x']
@@ -183,7 +174,6 @@ export default class Heatmap extends React.Component {
     render() {
         const { locations, scale } = this.state;
         console.log("rerendered");
-        console.log(this.props.data)
         return (
             <div className="heatmap">
                 { this.renderScatterChart(this.getPositionalData(this.props.data), scale) }

@@ -27,7 +27,6 @@ export default class TeamsHeatmap extends React.Component {
             locations: [],
             vertical: window.innerWidth <= 500,
             scale: window.innerWidth <= 500 ? 4.5 : 5,
-            team: props.team,
         };
 
         this.renderScatterChart = this.renderScatterChart.bind(this);
@@ -72,7 +71,7 @@ export default class TeamsHeatmap extends React.Component {
                         x: event_info.pass.end_location[0],
                         y: event_info.pass.end_location[1]
                     }
-                    if (event_info.team.id != this.state.team){
+                    if (event_info.team.id != this.props.team){
                         start['x'] = 120 - start['x']
                         start['y'] = 80 - start['y']
                         finish['x'] = 120 - finish['x']
@@ -89,7 +88,7 @@ export default class TeamsHeatmap extends React.Component {
                         x: event_info.shot.end_location[0],
                         y: event_info.shot.end_location[1]
                     }
-                    if (event_info.team.id != this.state.team){
+                    if (event_info.team.id != this.props.team){
                         start['x'] = 120 - start['x']
                         start['y'] = 80 - start['y']
                         finish['x'] = 120 - finish['x']
@@ -97,7 +96,7 @@ export default class TeamsHeatmap extends React.Component {
                     }
                     info.push([start, finish])
                 } else if (event_info.type.name == "Ball Receipt"){
-                    if (event_info.team.id != this.state.team){
+                    if (event_info.team.id != this.props.team){
                         info.push([event_info.location[0], event_info.location[1]])
                     }
                 }
