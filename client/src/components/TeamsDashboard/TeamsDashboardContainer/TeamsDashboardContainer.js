@@ -38,14 +38,12 @@ export default class TeamsDashboardContainer extends React.Component {
             if (this.state.filter == "Passes"){
                 res = await fetch(`/event_players_team/${team}/Pass/${this.state.eventType}`);
             } else if (this.state.filter == "Shots"){
+                console.log(this.state.eventType)
                 res = await fetch(`/event_players_team/${team}/Shot/${this.state.eventType}`);
             } else if (this.state.filter == "Goals"){
-                res = await fetch(`/team_goals/${team}/${this.state.eventType}`);
-            } else if (this.state.filter == "Line-Breaking Passes"){
-                res = await fetch(`/linebreaking_by_team/${team}/${this.state.eventType}`)
-            } else if (this.state.filter == "Receipts in Space"){
-                res = await fetch(`/ballreceipts_by_team/${team}/${this.state.eventType}`)
-            }
+                res = await fetch(`/team_goals/${team}`);
+                console.log('Fetching Goals')
+            } 
 
             const events = await res.json();
             for (var i in events) {

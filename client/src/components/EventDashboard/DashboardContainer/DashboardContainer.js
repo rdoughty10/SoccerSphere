@@ -45,6 +45,11 @@ export default class DashboardContainer extends React.Component {
                 awayTeam: null,
             })
             return;
+        } else if (this.state.match != match) {
+            this.setState({
+                events: [],
+                selectedEvent: []
+            })
         }
 
         this.setState({
@@ -171,6 +176,9 @@ export default class DashboardContainer extends React.Component {
     }
 
     render() {
+        console.log("RENDERING WHOLE DASHBOARD");
+        console.log(this.state.homeTeam)
+        console.log(this.state.awayTeam)
         const matches = this.state.matches;
         if (matches == null) {
             return
