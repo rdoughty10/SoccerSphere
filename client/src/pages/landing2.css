@@ -1,8 +1,8 @@
 /* landing2.css */
 .landing2 {
     position: relative;
-    /* height: 130vh; */
-    height: 825px;
+    /* height: 150vh; */
+    height: 788px;
     overflow: hidden;
 }
 
@@ -17,12 +17,12 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    /* height: 110vh; */
-    height: 700px;
+    /* height: 120vh; */
+    height: 630px;
     opacity: 0.7;
     animation: imageFade 30s infinite;
     /* background-size: 100% 120vh; */
-    background-size: 100% 700px;
+    background-size: 100% 630px;
     background-position: center;
 }
 
@@ -89,8 +89,9 @@ body {
     background-color: black;
     flex-grow: 1;
     padding: 10px;
-    /* height: 45vh; */
-    height: 237px;
+    /* padding: 2vh; */
+    /* height: 40vh; */
+    height: 210px;
     margin-right: 0px;
     width: 75vw;
     text-align: left; 
@@ -111,8 +112,8 @@ body {
     top: 0;
     right: 0;
     width: 280px;
-    /* height: 45vh; */
-    height: 237px;
+    /* height: 40vh; */
+    height: 210px;
     background-image: url('Images/logo3.jpg');
 }
 
@@ -122,5 +123,6 @@ body {
 }
 
 .scroll-box {
-    margin-top: 50vh; /* Adjust the value as needed */
+    /* margin-top: 40vh;  */
+    margin-top: 210px; 
 }
