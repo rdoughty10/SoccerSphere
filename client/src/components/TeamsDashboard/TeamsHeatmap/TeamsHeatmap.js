@@ -97,7 +97,7 @@ export default class TeamsHeatmap extends React.Component {
                     }
                     info.push([start, finish])
                 } else if (event_info.type.name == "Ball Receipt*"){
-                    if (event_info.team.id === this.props.team){
+                    if (event_info.team.id !== this.props.team){
                         const point_loc = {
                             x: 120-event_info.location[0],
                             y: 80-event_info.location[1]
