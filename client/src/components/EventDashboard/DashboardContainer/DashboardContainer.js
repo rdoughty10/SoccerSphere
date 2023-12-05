@@ -126,28 +126,28 @@ export default class DashboardContainer extends React.Component {
 
         switch (selectedFilter){
             case "Goals":
-                toast.info('Selected filter: Goals');
+                toast.info('The shots that resulted in goals, with teams color coded. Best to examine what types of shots were most used and most successful.');
                 break;
             case "Shots":
-                toast.info('Selected filter: Shots');
+                toast.info('All shots on goal, regardless of whether they resulted in a goal or not. Best to understand the nature of a team’s shots- where they come from, which of theirs tend to be successful, and more.');
                 break;
             case "Passes":
-                toast.info('Selected filter: Passes');
+                toast.info('All passes are accounted for, no matter the result (incomplete, intercepted, out of play). Best to examine a team’s style or where a team is vulnerable during the run of play.');
                 break;
             case "Pressures":
-                toast.info('Selected filter: Pressures');
+                toast.info('Tracks every time a player applies pressure to an opposing player. Used to visualize how a team presses, in a high-press, mid-block, or low block.');
                 break;
             case "Duels":
-                toast.info('Selected filter: Duels');
+                toast.info('The moments when a player and an opposing player challenge for the ball simultaneously. Best to examine the aggressiveness of a team.');
                 break;
             case "Carries":
-                toast.info('Selected filter: Carries');
+                toast.info('Actions that are defined by dribbling the ball towards the opposition goal, also used to understand a team’s style of play or pressing tactics.');
                 break;
             case "Ball Recoveries":
-                toast.info('Selected filter: Ball Recoveries');
+                toast.info('Where a player recovers a ball in a situation where neither team has possession or when the ball has been directly to him by an opponent.');
                 break;
             case "Line-Breaking Passes":
-                toast.info('Selected filter: Line-Breaking Passes');
+                toast.info('Passes that intersect a pair of defenders in a line of the opposing team’s formation, traveling towards the goal and has a length of at least 10 yards. Best to understand where teams are successful in breaking down defensive blocks or which areas are vulnerable.');
                 break;
             case "Receipts in Space":
                 toast.info('Receipts in Space is a series of metrics that record the number of ball receipts with a defender within a range of 0-2, 2-5, 5-10 or 10 or more yards of the ball receiver.');
